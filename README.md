@@ -1,5 +1,7 @@
 [简体中文](README.zh_CN.md) · **English**
 
+![StreetPass product concept](assets/images/streetpass-hero-v2.png)
+
 # StreetPass for AI Passport
 
 **Carry a little about yourself. Meet someone along the way.**
@@ -15,9 +17,20 @@ An offline social-card firmware for the FoloToy AI Passport. Nearby devices exch
 
 ## A quiet interface for small encounters
 
-![Twelve actual StreetPass LVGL screens](assets/images/streetpass-lvgl-preview-v1.png)
+![Four-screen StreetPass UI study](assets/images/streetpass-ui-study-v2.png)
 
-Actual 240 x 320 LVGL pages rendered on a computer with fictional profiles. The palette uses charcoal surfaces, blue selection accents and a small envelope mascot. This preview is not a photograph of the device.
+Clearer titles, more breathing room, and small blue accents put the focus back on the person behind the card. The cover and the image above are **AI-generated product and UI concepts**, not device photographs or current firmware screenshots. Profiles are fictional; the concept QR is illustrative.
+
+<details>
+<summary>See the current firmware UI and phone editor</summary>
+
+![Actual firmware LVGL screens](assets/images/streetpass-lvgl-preview-v1.png)
+
+Actual 240 x 320 LVGL pages rendered on a computer with sample data; physical-device validation is pending. The firmware still uses these pages. The new visual study has not been implemented in firmware.
+
+[Open the local phone editor preview](assets/images/streetpass-phone-editor-v1.png) · [Read the complete user guide](docs/assets/streetpass-guide.md)
+
+</details>
 
 ## What it does
 
@@ -34,6 +47,10 @@ At capacity, the oldest non-favorite card is replaced. An inbox containing only 
 
 ## Try the flow
 
+![Write a card, pass by, and say hello](assets/images/streetpass-encounter-story-v2.png)
+
+Start with a little about yourself. Let shared interests start a conversation. This illustrated flow sets the scene; the steps below describe the actual operation.
+
 1. Open **Edit by QR** on the device. Scan its Wi-Fi QR with your phone and confirm joining the hotspot. Bluetooth encounters pause while editing.
 2. Open the local editor. If the phone does not display a login page, press device OK for the second QR, or visit `http://192.168.4.1` while connected to the hotspot.
 3. Write a short card. Choose whether to publish contact details, preview, save, and wait for confirmation. Hold device OK to exit editing and resume encounters unless paused in Settings.
@@ -44,6 +61,9 @@ Use UP/DOWN to select, OK to open, and hold OK to return. On another person's ca
 **Privacy:** cards are public to nearby compatible BLE clients. Share only what you are comfortable making public. Removing a field affects future exchanges and cannot remotely erase previously received copies. Contact QR codes contain text; they do not automatically add a WeChat contact.
 
 ## Build and verify
+
+<details>
+<summary>Environment, build commands and firmware downloads</summary>
 
 Target: **ESP32-C3, 8 MB Flash, no PSRAM, ESP-IDF 5.5.3**. Follow the [environment setup](docs/development/environment-setup.md) for prerequisites and Windows setup. In an ESP-IDF-enabled Bash shell:
 
@@ -59,6 +79,8 @@ The firmware gate creates `build/FoloToy-AI-Passport-full.bin`, the verified mer
 
 The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery at `0x700000`, and five-second UP bootloader hook are retained. Public cards use a separate NVS partition. Host storage tests use fake NVS and cannot prove real flash or power-loss behavior.
 
+</details>
+
 | Verification | Recorded result |
 | --- | --- |
 | Build | PASS locally with ESP-IDF 5.5.3; application 2,383,008 / 3,145,728 bytes |
@@ -70,6 +92,9 @@ The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery
 See the [verification record](docs/assets/streetpass-guide.md#software-verification-record-2026-09-21) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
 
 ## Project map
+
+<details>
+<summary>Source layout and upstream relationship</summary>
 
 | Path | Responsibility |
 | --- | --- |
@@ -83,6 +108,8 @@ See the [verification record](docs/assets/streetpass-guide.md#software-verificat
 | `docs/assets/` | StreetPass guide and design decisions |
 
 This standalone repository develops StreetPass on `main`. Retained upstream hardware and demo documents describe the original platform; the root README and StreetPass guide describe this application. The inherited fork-sync workflow skips standalone repositories. Upstream history and attribution are preserved.
+
+</details>
 
 ## Contribute and credits
 

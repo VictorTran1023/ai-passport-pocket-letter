@@ -1,5 +1,7 @@
 **简体中文** · [English](README.md)
 
+![擦肩产品概念封面](assets/images/streetpass-hero-v2.png)
+
 # 擦肩 · StreetPass for AI Passport
 
 **随身带一点关于自己的事，留给路上遇见的人。**
@@ -15,9 +17,20 @@
 
 ## 安静的界面，留给偶然的相遇
 
-![擦肩十二页实际 LVGL 界面](assets/images/streetpass-lvgl-preview-v1.png)
+![擦肩四页 UI 视觉提案](assets/images/streetpass-ui-study-v2.png)
 
-使用虚构资料在电脑上渲染的实际 240 x 320 LVGL 页面。深灰底色、蓝色选中提示，配一个小信封角色。这是代码渲染预览，并非真机照片。
+更清晰的标题、更从容的留白，以及少量蓝青色提示，让视线回到名片本身。封面与上图为 **AI 生成的产品／UI 视觉提案**，并非真机照片或当前固件截图。画面资料为虚构，提案中的二维码仅作示意。
+
+<details>
+<summary>查看当前固件实际界面与手机编辑页</summary>
+
+![当前固件实际 LVGL 界面](assets/images/streetpass-lvgl-preview-v1.png)
+
+使用示例资料在电脑上渲染的实际 240 x 320 LVGL 页面；尚未真机验证。当前固件仍使用这套界面，新提案尚未写入固件。
+
+[查看手机本地编辑页](assets/images/streetpass-phone-editor-v1.png) · [查看完整使用说明](docs/assets/streetpass-guide.zh_CN.md)
+
+</details>
 
 ## 可以做什么
 
@@ -34,6 +47,10 @@
 
 ## 怎样使用
 
+![编辑名片、擦肩交换、开始交谈的涂鸦流程](assets/images/streetpass-encounter-story-v2.png)
+
+从一段自我介绍开始，把共同兴趣留给真实的交谈。上图为使用场景插画，具体操作见随后的步骤。
+
 1. 在设备打开**扫码编辑**，手机扫描 Wi-Fi 码并确认加入热点。编辑期间暂停蓝牙擦肩。
 2. 打开本地编辑页。手机没有自动弹出登录页时，按设备 OK 显示第二个二维码，或在已连接热点的情况下访问 `http://192.168.4.1`。
 3. 写好名片，选择是否公开联系方式，预览并保存，等待成功提示。长按设备 OK 退出编辑；设置中未暂停擦肩时，蓝牙恢复。
@@ -44,6 +61,9 @@
 **公开范围：**附近兼容的蓝牙客户端可以读取名片，请只填写愿意公开的内容。取消某字段只影响今后的交换，不能远程删除他人已经收到的副本。联系二维码包含文字，不会自动添加微信好友。
 
 ## 构建与验证
+
+<details>
+<summary>展开环境要求、构建命令与固件下载说明</summary>
 
 硬件目标：**ESP32-C3、8 MB Flash、无 PSRAM、ESP-IDF 5.5.3**。依赖和 Windows 环境配置见[环境搭建说明](docs/development/environment-setup.zh_CN.md)。在已激活 ESP-IDF 的 Bash 中运行：
 
@@ -59,6 +79,8 @@ cd ai-passport-streetpass
 
 保留 3 MB 应用上限、`0x356000` 的受保护 `cardid`、`0x700000` 的永久 Recovery，以及长按上键五秒的 bootloader 入口。名片使用独立 NVS 分区。主机存储测试使用 NVS 替身，不能证明真实 Flash 或断电行为。
 
+</details>
+
 | 验证项目 | 已记录结果 |
 | --- | --- |
 | Build | 本地 ESP-IDF 5.5.3 构建 PASS；应用 2,383,008 / 3,145,728 字节 |
@@ -70,6 +92,9 @@ cd ai-passport-streetpass
 带日期的产物校验值和验证边界见[验证记录](docs/assets/streetpass-guide.zh_CN.md#软件验证记录2026-09-21)。上方工作流徽章显示当前远程检查状态，与这里记录的本地结果分别展示。
 
 ## 项目结构
+
+<details>
+<summary>展开源码结构与上游关系</summary>
 
 | 路径 | 职责 |
 | --- | --- |
@@ -83,6 +108,8 @@ cd ai-passport-streetpass
 | `docs/assets/` | 擦肩使用说明和设计决定 |
 
 这是在 `main` 上维护擦肩的独立仓库。保留的上游硬件和示例文档描述原始平台；根目录 README 与擦肩指南描述本应用。继承的 fork 同步工作流会跳过独立仓库。保留上游历史及署名。
+
+</details>
 
 ## 参与与致谢
 

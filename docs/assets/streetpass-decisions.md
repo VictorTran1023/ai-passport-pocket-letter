@@ -35,3 +35,7 @@ The user supplied a tech-dark palette, superseding the warm A+D colors while ret
 ## Approved first-version visual baseline
 
 The user approved `streetpass-techdark-ui-overview-v1.png` after reviewing the palette update. Use this image as the first-version visual baseline: A-style hierarchy, D-style small friendly elements, and the exact tech-dark palette above. Earlier images remain historical alternatives. Do not generate more style alternatives unless requested. Approval covers the visual direction; the QR examples remain illustrative and firmware behavior still requires implementation and validation.
+
+## Repository presentation update (2026-09-21)
+
+The repository cover, four-screen UI study and illustrated encounter flow are documented in the [image index](../../assets/images/README.md#repository-presentation-revision-2). They refine presentation within the approved charcoal and blue palette. They are conceptual artwork, not an implemented UI revision or a replacement for device acceptance. Current implementation screenshots remain available in the README's expandable section.
