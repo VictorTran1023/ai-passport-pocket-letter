@@ -4,11 +4,7 @@
 
 # Contributing
 
-Thank you for contributing to FoloToy AI Passport — code, documentation,
-firmware, and feedback. This repository is the development baseline for
-open-source wearable AI hardware designed for AI agents. It is often forked for
-second development; the fork conventions are in
-[`docs/fork-guide.md`](../docs/fork-guide.md).
+StreetPass is an independent offline social-card application built on FoloToy AI Passport. Contributions to the application belong in this repository; hardware documentation and baseline tools retain their upstream context.
 
 ## Before you start
 
@@ -20,8 +16,7 @@ second development; the fork conventions are in
 - Follow [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) when participating in the
   community. For ordinary usage questions, see [`SUPPORT.md`](SUPPORT.md).
 - Do not commit credentials, tokens, authorization files, or personal data.
-- The repository's `main` branch stays in sync with the upstream baseline; fork
-  users develop feature work in `feature/*` branches (see `docs/fork-guide.md`).
+- This standalone repository maintains StreetPass on `main`. Open focused changes on a separate branch and target `main`; inherited fork synchronization guidance describes the upstream template.
 
 ## Development and verification
 

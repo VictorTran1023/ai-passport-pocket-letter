@@ -6,6 +6,8 @@
 
 ## Unreleased
 
+- Add the StreetPass first-version firmware: dark physical-button UI, offline hotspot editor, public BLE card exchange, a 100-person inbox, persistent preferences, and host validation. Device acceptance remains pending.
+
 - Made mini-program BLE install compatibility a template-level invariant: fixed
   protected `cardid`/Recovery partitions, retained the five-second UP-key
   Recovery boot hook, and added CI validation for merged-image structure,

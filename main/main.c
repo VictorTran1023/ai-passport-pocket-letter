@@ -1,139 +1,349 @@
-// main/main.c —— FoloToy AI Passport BSP 驱动参考示例:初始化 + 菜单 + 按键分发。
-//
-// 按键语义(全局统一):
-//   上/下 短按   菜单中=移动选中项;演示页中=该页自定义
-//   确定  短按   菜单中=进入选中项;演示页中=该页自定义
-//   确定  长按   演示页中=返回菜单(由本文件统一拦截)
-#include "bsp_i2c.h"
-#include "bsp_display.h"
-#include "bsp_button.h"
 #include "bsp_audio.h"
 #include "bsp_battery.h"
-#include "bsp_pins.h"      // 错误日志里要打印 BSP_LCD_* 引脚号
-#include "demo.h"
-#include "ui_pixel.h"
-#include "lvgl.h"
+#include "bsp_button.h"
+#include "bsp_display.h"
+#include "bsp_i2c.h"
 #include "esp_log.h"
-#include "esp_sleep.h"
-
-static const char *TAG = "main";
-
-static const demo_entry_t DEMOS[] = {
-    { "Display", demo_display_enter, demo_display_exit, demo_display_key },
-    { "Button",  demo_button_enter,  demo_button_exit,  demo_button_key  },
-    { "Audio",   demo_audio_enter,   demo_audio_exit,   demo_audio_key   },
-    { "Battery", demo_battery_enter, demo_battery_exit, demo_battery_key },
-    { "Wi-Fi",   demo_wifi_enter,    demo_wifi_exit,    demo_wifi_key    },
-    { "BLE",     demo_ble_enter,     demo_ble_exit,     demo_ble_key     },
-    { "Low Power", demo_low_power_enter, demo_low_power_exit, demo_low_power_key },
-};
-#define DEMO_COUNT (sizeof(DEMOS) / sizeof(DEMOS[0]))
-
-// 各外设初始化结果:失败的项在菜单里标 [FAIL] 且不允许进入。
-static bool s_ok[DEMO_COUNT];
-
-static lv_obj_t *s_menu_scr;
-static lv_obj_t *s_cards[DEMO_COUNT];
-static lv_obj_t *s_rows[DEMO_COUNT];
-static lv_obj_t *s_mascot;
-static int  s_sel;                 // 当前选中项
-static int  s_active = -1;         // 当前所在演示页;-1 = 在菜单
-
-static void menu_refresh(void) {
-    for (size_t i = 0; i < DEMO_COUNT; i++) {
-        lv_label_set_text_fmt(s_rows[i], "%s%s",
-                              DEMOS[i].name,
-                              s_ok[i] ? "" : "  [FAIL]");
-        ui_pixel_set_selected(s_cards[i], (int)i == s_sel, s_ok[i]);
-        lv_obj_set_style_text_color(s_rows[i],
-            s_ok[i] ? lv_color_hex(UI_INK) : lv_color_hex(0x7A2020), 0);
+#include "esp_system.h"
+#include "esp_timer.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
+#include "nvs_flash.h"
+#include "sp_ble.h"
+#include "sp_store.h"
+#include "sp_ui.h"
+#include "sp_web.h"
+#include <stdio.h>
+#include <string.h>
+static const char *TAG = "streetpass";
+typedef struct {
+    bool incoming;
+    sp_key_t key;
+    uint32_t generation;
+    uint16_t length;
+    uint8_t wire[SP_WIRE_MAX];
+} event_t;
+static QueueHandle_t events;
+static sp_view_t view = {.battery = -1, .active_slot = -1, .dim = true};
+static sp_nav_t before_notice;
+static int notice_slot = -1;
+static int64_t active_at, edit_at, notice_until, battery_at;
+static bool editing, dimmed, audio_ready;
+static void render(void) {
+    if (bsp_lvgl_lock(1000)) {
+        sp_ui_render(&view);
+        bsp_lvgl_unlock();
     }
 }
-
-static void menu_build(void) {
-    s_menu_scr = ui_pixel_screen_create("FoloToy");
-
-    for (size_t i = 0; i < DEMO_COUNT; i++) {
-        int x = 11 + (int)(i % 2) * 112;
-        int y = 52 + (int)(i / 2) * 47;
-        s_cards[i] = ui_pixel_panel_create(s_menu_scr, x, y, 102, 40, UI_PAPER);
-        s_rows[i] = lv_label_create(s_cards[i]);
-        lv_obj_set_style_text_font(s_rows[i], &lv_font_montserrat_14, 0);
-        lv_obj_set_style_text_align(s_rows[i], LV_TEXT_ALIGN_CENTER, 0);
-        lv_obj_center(s_rows[i]);
-    }
-
-    s_mascot = ui_pixel_mascot_create(s_menu_scr, 101, 242);
-
-    menu_refresh();
-    lv_screen_load(s_menu_scr);
-}
-
-static void enter_menu(void) {
-    s_active = -1;
-    menu_build();
-}
-
-// 按键回调运行在 button 组件的任务里,操作 LVGL 必须加锁。
-static void on_key(bsp_btn_t btn, bsp_btn_ev_t ev, void *user) {
-    (void)user;
-    if (!bsp_lvgl_lock(500)) return;
-
-    if (s_active >= 0) {
-        if (btn == BSP_BTN_OK && ev == BSP_BTN_LONG) {     // 统一返回
-            DEMOS[s_active].exit();
-            enter_menu();
-        } else {
-            DEMOS[s_active].key(btn, ev);
+static void index_refresh(void) {
+    sp_store_index(view.index);
+    int count = 0;
+    for (int i = 0; i < SP_MAX_PEOPLE; i++)
+        if (view.index[i].occupied) {
+            int pos = count;
+            while (pos > 0 && view.index[view.order[pos - 1]].seen < view.index[i].seen) {
+                view.order[pos] = view.order[pos - 1];
+                pos--;
+            }
+            view.order[pos] = i;
+            count++;
         }
-    } else if (ev == BSP_BTN_CLICK) {
-        if (btn == BSP_BTN_UP)   { s_sel = (s_sel + DEMO_COUNT - 1) % DEMO_COUNT; menu_refresh(); }
-        if (btn == BSP_BTN_DOWN) { s_sel = (s_sel + 1) % DEMO_COUNT;              menu_refresh(); }
-        if (btn == BSP_BTN_OK && s_ok[s_sel]) {
-            s_active = s_sel;
-            ui_pixel_mascot_jump(s_mascot);
-            lv_obj_delete(s_menu_scr);
-            s_menu_scr = NULL;
-            s_mascot = NULL;
-            DEMOS[s_active].enter();
-        } else if (btn == BSP_BTN_UP || btn == BSP_BTN_DOWN) {
-            ui_pixel_mascot_jump(s_mascot);
+    view.nav.people = count;
+    if (view.nav.page == SP_INBOX && view.nav.selected >= count)
+        view.nav.selected = count ? count - 1 : 0;
+}
+static bool incoming(uint32_t gen, const uint8_t *wire, size_t n) {
+    if (n > SP_WIRE_MAX)
+        return false;
+    event_t e = {.incoming = true, .generation = gen, .length = (uint16_t)n};
+    memcpy(e.wire, wire, n);
+    return xQueueSend(events, &e, 0) == pdTRUE;
+}
+static void on_key(bsp_btn_t button, bsp_btn_ev_t ev, void *arg) {
+    (void)arg;
+    event_t e = {0};
+    if (ev == BSP_BTN_CLICK)
+        e.key = button == BSP_BTN_UP ? SP_UP : button == BSP_BTN_DOWN ? SP_DOWN : SP_OK;
+    else if (ev == BSP_BTN_LONG)
+        e.key = button == BSP_BTN_UP ? SP_HOLD_UP : button == BSP_BTN_DOWN ? SP_HOLD_DOWN : SP_BACK;
+    else
+        return;
+    xQueueSend(events, &e, 0);
+}
+static void radio_start(void) {
+    if (view.paused)
+        return;
+    sp_store_own(&view.own);
+    esp_err_t e = sp_ble_start(&view.own, incoming);
+    if (e != ESP_OK)
+        snprintf(view.status, sizeof view.status, "蓝牙启动失败 (%x)", e);
+    else
+        view.status[0] = 0;
+}
+static void edit_stop(void) {
+    sp_web_stop();
+    editing = false;
+    view.wifi_qr = NULL;
+    view.ssid = NULL;
+    sp_store_own(&view.own);
+    radio_start();
+}
+static void card_open(int slot) {
+    if (sp_store_read(slot, &view.card) == ESP_OK) {
+        view.active_slot = slot;
+        view.nav.own = false;
+        view.nav.tab = 0;
+        view.nav.page = SP_CARD;
+        sp_index_t *i = &view.index[slot];
+        if (sp_store_flags(slot, false, i->favorite) != ESP_OK)
+            strcpy(view.status, "未读状态保存失败");
+        index_refresh();
+    } else {
+        strcpy(view.status, "名片读取失败");
+        view.nav.page = SP_HOME;
+    }
+}
+static void chime(void) {
+    if (!view.sound)
+        return;
+    if (!audio_ready)
+        audio_ready = bsp_audio_init() == ESP_OK && bsp_audio_set_format(16000, 16, 1) == ESP_OK;
+    if (!audio_ready)
+        return;
+    static const int16_t wave[16] = {0, 306,  566,  739,  800,  739,  566,  306,
+                                     0, -306, -566, -739, -800, -739, -566, -306};
+    int16_t pcm[160];
+    bsp_audio_set_volume(20);
+    for (int block = 0; block < 8; block++) {
+        for (int i = 0; i < 160; i++)
+            pcm[i] = wave[i % 16] * (block < 4 ? block + 1 : 8 - block) / 4;
+        if (bsp_audio_write(pcm, sizeof pcm) != ESP_OK)
+            break;
+    }
+    bsp_audio_set_volume(0);
+}
+static void action(sp_action_t a, int previous_selection) {
+    if (a == SP_FAVORITE || a == SP_REMOVE) {
+        int slot = view.active_slot;
+        if (slot < 0 || !view.index[slot].occupied ||
+            memcmp(view.index[slot].id, view.card.id, 8)) {
+            strcpy(view.status, "这张名片已被更新替换");
+            view.nav.page = SP_HOME;
+            return;
         }
     }
-    bsp_lvgl_unlock();
+    switch (a) {
+    case SP_OPEN_PEER:
+        if (previous_selection < view.nav.people)
+            card_open(view.order[previous_selection]);
+        break;
+    case SP_OPEN_OWN:
+        sp_store_own(&view.card);
+        view.active_slot = -1;
+        break;
+    case SP_EDIT_START:
+        strcpy(view.status, "正在开启编辑热点…");
+        render();
+        if (sp_ble_stop() != ESP_OK) {
+            strcpy(view.status, "蓝牙未能停止，请重启");
+            view.nav.page = SP_HOME;
+            break;
+        }
+        if (sp_web_start() != ESP_OK) {
+            strcpy(view.status, "热点启动失败，请重试");
+            view.nav.page = SP_HOME;
+            radio_start();
+            break;
+        }
+        editing = true;
+        edit_at = esp_timer_get_time();
+        view.wifi_qr = sp_web_wifi_qr();
+        view.ssid = sp_web_ssid();
+        view.status[0] = 0;
+        break;
+    case SP_EDIT_STOP:
+        edit_stop();
+        break;
+    case SP_FAVORITE:
+        if (view.active_slot >= 0) {
+            sp_index_t *i = &view.index[view.active_slot];
+            if (sp_store_flags(view.active_slot, false, !i->favorite) != ESP_OK)
+                strcpy(view.status, "收藏保存失败");
+            index_refresh();
+            view.nav.tab = 2;
+        }
+        break;
+    case SP_REMOVE:
+        if (sp_store_delete(view.active_slot) != ESP_OK) {
+            strcpy(view.status, "删除失败，请重试");
+            view.nav.page = SP_HOME;
+        }
+        index_refresh();
+        break;
+    case SP_PAUSE:
+        if (view.paused) {
+            view.paused = false;
+            radio_start();
+        } else if (sp_ble_stop() == ESP_OK)
+            view.paused = true;
+        else
+            strcpy(view.status, "暂停失败，请重启");
+        break;
+    case SP_SOUND:
+        if (!view.sound && !audio_ready) {
+            audio_ready =
+                bsp_audio_init() == ESP_OK && bsp_audio_set_format(16000, 16, 1) == ESP_OK;
+            bsp_audio_set_volume(0);
+        }
+        if (audio_ready)
+            view.sound = !view.sound;
+        else
+            strcpy(view.status, "提示音暂不可用");
+        break;
+    case SP_DIM:
+        view.dim = !view.dim;
+        break;
+    default:
+        break;
+    }
+    if (a == SP_PAUSE || a == SP_SOUND || a == SP_DIM) {
+        uint8_t bits = (view.paused ? 1 : 0) | (view.sound ? 2 : 0) | (view.dim ? 4 : 0);
+        if (sp_store_set_settings(bits) != ESP_OK)
+            strcpy(view.status, "设置保存失败，请重试");
+    }
 }
-
+static void worker(void *arg) {
+    (void)arg;
+    active_at = esp_timer_get_time();
+    radio_start();
+    index_refresh();
+    render();
+    for (;;) {
+        event_t e;
+        bool redraw = false;
+        if (xQueueReceive(events, &e, pdMS_TO_TICKS(100)) == pdTRUE) {
+            if (e.incoming) {
+                sp_card_t card;
+                int slot = -1;
+                bool changed = false;
+                bool saved = sp_decode(&card, e.wire, e.length) &&
+                             sp_store_receive(&card, &slot, &changed) == ESP_OK;
+                sp_ble_complete(e.generation, saved);
+                if (saved) {
+                    index_refresh();
+                    if (changed && !editing) {
+                        if (view.nav.page != SP_NOTICE)
+                            before_notice = view.nav;
+                        strcpy(view.notice, card.text[0]);
+                        notice_slot = slot;
+                        view.nav.page = SP_NOTICE;
+                        notice_until = esp_timer_get_time() + 4000000;
+                        active_at = esp_timer_get_time();
+                        bsp_display_backlight(35);
+                        dimmed = false;
+                        chime();
+                        redraw = true;
+                    }
+                } else {
+                    strcpy(view.status, "名片未保存，请检查空间");
+                    redraw = true;
+                }
+            } else {
+                active_at = esp_timer_get_time();
+                if (dimmed) {
+                    bsp_display_backlight(35);
+                    dimmed = false;
+                    continue;
+                }
+                if (view.nav.page == SP_NOTICE) {
+                    view.nav = before_notice;
+                    index_refresh();
+                    if (e.key == SP_OK)
+                        card_open(notice_slot);
+                } else {
+                    int old = view.nav.selected;
+                    sp_action_t a = sp_nav_key(&view.nav, e.key);
+                    action(a, old);
+                }
+                redraw = true;
+            }
+        }
+        int64_t now = esp_timer_get_time();
+        if (view.nav.page == SP_NOTICE && now >= notice_until) {
+            view.nav = before_notice;
+            index_refresh();
+            redraw = true;
+        }
+        if (editing && now - edit_at > 600000000LL) {
+            edit_stop();
+            view.nav.page = SP_HOME;
+            strcpy(view.status, "编辑已超时，热点已关闭");
+            redraw = true;
+        }
+        bool ready = sp_ble_ready();
+        if (ready != view.radio_ready) {
+            view.radio_ready = ready;
+            redraw = true;
+        }
+        if (now >= battery_at) {
+            view.battery = bsp_battery_soc();
+            battery_at = now + 30000000;
+            redraw = true;
+        }
+        if (view.dim && !editing && !dimmed && now - active_at > 30000000) {
+            bsp_display_backlight(3);
+            dimmed = true;
+        }
+        if (redraw)
+            render();
+    }
+}
 void app_main(void) {
-    ESP_LOGI(TAG, "FoloToy AI Passport BSP demo 启动");
-    esp_sleep_wakeup_cause_t wakeup = esp_sleep_get_wakeup_cause();
-    if (wakeup != ESP_SLEEP_WAKEUP_UNDEFINED) {
-        ESP_LOGI(TAG, "休眠唤醒原因: %d", wakeup);
-    }
-
     bsp_i2c_init();
-    bsp_i2c_scan();
-
-    // 屏幕是本 demo 的 UI 载体,失败就没有菜单可言 —— 打清楚日志后退出,
-    // 不做"串口菜单"降级(那会让本文件复杂一倍,违背参考示例的初衷)。
     if (bsp_display_init() != ESP_OK || !bsp_lvgl_init()) {
-        ESP_LOGE(TAG, "显示/LVGL 初始化失败,demo 无法继续。"
-                      "检查 SPI 接线(MOSI=%d SCLK=%d CS=%d DC=%d BL=%d)",
-                 BSP_LCD_MOSI, BSP_LCD_SCLK, BSP_LCD_CS, BSP_LCD_DC, BSP_LCD_BL);
+        ESP_LOGE(TAG, "Display initialization failed");
         return;
     }
-    bsp_display_backlight(100);
-
-    // 其余外设单项失败不阻塞:菜单里标 [FAIL],其他项照常可测。
-    s_ok[0] = true;                                   // Display 已确认可用
-    s_ok[1] = (bsp_button_init(on_key, NULL) == ESP_OK);
-    s_ok[2] = (bsp_audio_init() == ESP_OK);
-    s_ok[3] = (bsp_battery_init() == ESP_OK);
-    s_ok[4] = true;                                    // 页面内按需初始化并显示错误
-    s_ok[5] = true;
-    s_ok[6] = true;
-
-    if (bsp_lvgl_lock(1000)) { enter_menu(); bsp_lvgl_unlock(); }
-
-    ESP_LOGI(TAG, "就绪:Display=%d Button=%d Audio=%d Battery=%d",
-             s_ok[0], s_ok[1], s_ok[2], s_ok[3]);
+    bsp_display_backlight(35);
+    esp_err_t e = nvs_flash_init();
+    if (e == ESP_OK)
+        e = sp_store_init();
+    if (e != ESP_OK) {
+        view.nav.page = SP_ERROR;
+        snprintf(view.status, sizeof view.status, "存储初始化失败 (%x)\n数据未被清空", e);
+        render();
+        return;
+    }
+    sp_store_own(&view.own);
+    uint8_t settings = 4;
+    if (sp_store_get_settings(&settings) == ESP_OK) {
+        view.paused = (settings & 1) != 0;
+        view.sound = (settings & 2) != 0;
+        view.dim = (settings & 4) != 0;
+    } else {
+        view.paused = true;
+        strcpy(view.status, "设置读取失败，已暂停");
+    }
+    bsp_battery_init();
+    view.battery = bsp_battery_soc();
+    events = xQueueCreate(6, sizeof(event_t));
+    if (!events) {
+        view.nav.page = SP_ERROR;
+        strcpy(view.status, "内存不足");
+        render();
+        return;
+    }
+    if (bsp_button_init(on_key, NULL) != ESP_OK) {
+        view.nav.page = SP_ERROR;
+        strcpy(view.status, "按键初始化失败");
+        render();
+        return;
+    }
+    if (xTaskCreate(worker, "streetpass", 8192, NULL, 4, NULL) != pdPASS) {
+        view.nav.page = SP_ERROR;
+        strcpy(view.status, "应用任务启动失败");
+        render();
+        return;
+    }
+    ESP_LOGI(TAG, "StreetPass started; free heap: %lu", (unsigned long)esp_get_free_heap_size());
 }

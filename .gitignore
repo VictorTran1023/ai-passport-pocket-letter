@@ -4,3 +4,7 @@ sdkconfig.old
 managed_components/
 .vscode/
 .idea/
+
+# Python verification caches
+__pycache__/
+*.pyc

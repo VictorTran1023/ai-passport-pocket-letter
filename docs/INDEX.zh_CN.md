@@ -43,3 +43,9 @@
 - [CODE_OF_CONDUCT.zh_CN.md](../.github/CODE_OF_CONDUCT.zh_CN.md)：贡献者公约行为准则。
 - [SECURITY.zh_CN.md](../.github/SECURITY.zh_CN.md)：安全漏洞报告流程。
 - [SUPPORT.zh_CN.md](../.github/SUPPORT.zh_CN.md)：使用支持与问题反馈渠道。
+
+- [StreetPass development](assets/streetpass-development.zh_CN.md)
+- [StreetPass decisions](assets/streetpass-decisions.zh_CN.md)
+
+- [StreetPass guide](assets/streetpass-guide.zh_CN.md)
+- [擦肩项目首页](../README.zh_CN.md)
