@@ -86,7 +86,7 @@ cd ai-passport-streetpass
 | Build | 本地 ESP-IDF 5.5.3 构建 PASS；应用 3,133,280 / 3,145,728 字节 |
 | Host tests | PASS：协议、导航、存储和仓库检查 |
 | UI 与编辑页 | 真实 LVGL 渲染、二维码解码、桌面浏览器编辑页检查通过 |
-| Device tests | 精修版：NOT RUN，USB 设备未连接。先前固件已通过烧录、启动及蓝牙广播基础检查 |
+| Device tests | 精修版烧录、40 秒启动观察和蓝牙广播基础检查 PASS；完整真机验收仍待完成 |
 | Unverified | 步行擦肩、手机自动弹页、耗电、无线功能内存及实体 Recovery |
 
 带日期的产物校验值和验证边界见[验证记录](docs/assets/streetpass-guide.zh_CN.md#精修版验证2026-09-22)。上方工作流徽章显示当前远程检查状态，与这里记录的本地结果分别展示。

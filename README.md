@@ -86,7 +86,7 @@ The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery
 | Build | PASS locally with ESP-IDF 5.5.3; application 3,133,280 / 3,145,728 bytes |
 | Host tests | PASS: protocol, navigation, storage and repository checks |
 | UI and editor | Actual LVGL rendering, QR decoding and desktop-browser editor checks passed |
-| Device tests | Refined UI: NOT RUN; USB device unavailable. Earlier firmware passed USB flash, boot and BLE-advertisement smoke checks |
+| Device tests | PASS for refined-UI USB flash, 40-second boot observation and BLE-advertisement smoke checks; full device acceptance pending |
 | Unverified | Walking encounters, mobile captive portals, power use, radio memory and physical Recovery |
 
 See the [verification record](docs/assets/streetpass-guide.md#refined-ui-verification-2026-09-22) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
