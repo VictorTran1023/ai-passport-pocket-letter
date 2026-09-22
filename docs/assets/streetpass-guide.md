@@ -42,9 +42,9 @@ Run `./tools/validate.sh` in ESP-IDF 5.5.3. It checks documentation/workflows, o
 
 `tests/render_sp_ui.c` renders the actual LVGL pages on a host with sample data. Its 40 KB LVGL pool matches the firmware setting; it does not model the ESP32's total RAM, DMA, Wi-Fi or BLE consumption.
 
-Before normal use, test two boards: passing at walking speed, long profiles, simultaneous discovery, repeated encounters and updates, interrupted transfers, favorites at capacity, reboot persistence, idle battery life, sound, and repeated BLE-to-Wi-Fi transitions. Test QR scanning, captive-login behavior, fallback URL and interrupted saves on iOS and Android. Verify the permanent Recovery hook on the actual board. No device flashing or hardware-tested release has been performed. Source publication is separate from device acceptance.
+Before normal use, test two boards: passing at walking speed, long profiles, simultaneous discovery, repeated encounters and updates, interrupted transfers, favorites at capacity, reboot persistence, idle battery life, sound, and repeated BLE-to-Wi-Fi transitions. Test QR scanning, captive-login behavior, fallback URL and interrupted saves on iOS and Android. Verify the permanent Recovery hook on the actual board. An earlier build passed USB flashing, boot and BLE-advertisement smoke checks; the refined UI is awaiting reconnection for flashing. No hardware-accepted release has been published.
 
-- [Actual UI preview](../../assets/images/streetpass-lvgl-preview-v1.png)
+- [Actual UI preview](../../assets/images/streetpass-lvgl-preview-v2.png)
 - [Host rendering tool](../../tools/render_streetpass.py)
 
 Long introductions and messages automatically scroll within their display areas.
@@ -61,3 +61,11 @@ Removing contact details changes future card exchanges. Previously received copi
 - Device tests: NOT RUN. Two-board exchange, mobile captive portals, radio memory use, battery life and physical Recovery remain unverified.
 - Application: 2,383,008 bytes (3,145,728-byte limit). Merged image: 2,448,544 bytes, available locally at `build/FoloToy-AI-Passport-full.bin`.
 - Merged image SHA-256: `348959836EEA599FA6942F0232997BD31211EFF516D63437A33F680650C5126F`.
+
+### Refined UI verification (2026-09-22)
+
+- Build: PASS. Complete ESP-IDF 5.5.3 gate, merged image and mini-program Recovery contract verified. Application: 3,133,280 / 3,145,728 bytes; 12,448 bytes remain, so future features must recheck the size budget.
+- Host tests: PASS. Protocol, navigation, fake-NVS storage and repository checks. All 12 LVGL pages render with the 40 KB pool; maximum text, empty states and 20 repeated page cycles pass with no continuing memory growth. Three QR payloads decode correctly.
+- Device tests: NOT RUN for this UI revision: USB device was unavailable. The earlier `f300c8b` build passed segmented flashing, 40-second startup observation and external BLE advertisement detection on an ESP32-C3 revision 1.1 with 8 MB Flash. Original device identity and permanent Recovery were preserved; a local 8 MB backup was verified.
+- Unverified: refined-UI LCD appearance and physical controls, phone QR/hotspot editing, two-board exchanges, battery life, sound and physical Recovery entry.
+- Refined merged image: 3,198,816 bytes. SHA-256: `e4fac9edf62f401e9a4c319fba18291f04bdaf934b4c6b11dd3862c413f3a886`. Local output: `build/FoloToy-AI-Passport-full.bin`; no device-specific data is included.

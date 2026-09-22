@@ -13,7 +13,7 @@ Scope: [product decisions](streetpass-decisions.md). The implementation was deve
 
 ## Resource and behavior budget
 
-- Application stays within 3 MB. Use a 16 px compressed 1 bpp Noto Sans SC font in Flash; CJK basic-plane coverage, with fallback for unsupported characters. The generated font is not loaded into a RAM buffer.
+- Application stays within 3 MB. Use compressed 2 bpp Noto Sans SC fonts at 16/24 px for common characters and a 16 px 1 bpp full basic-CJK fallback in Flash. See the [font coverage](../../assets/fonts/README.md). The generated font is not loaded into a RAM buffer.
 - Only a compact 100-person index stays in RAM; card payloads are loaded on demand. No audio or image decoding at boot. UI, radio, and storage use bounded queues/buffers.
 - Public cards are intentionally readable by nearby compatible devices. The first version provides no identity authentication or private messaging; optional contact fields are explicitly published by their owner.
 - QR joining requires the phone OS confirmation where applicable. Captive portal opening is best effort; the second QR always points to the device-local editor.

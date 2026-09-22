@@ -17,16 +17,16 @@
 
 ## 安静的界面，留给偶然的相遇
 
-![擦肩四页 UI 视觉提案](assets/images/streetpass-ui-study-v2.png)
+![擦肩精修版实装界面](assets/images/streetpass-lvgl-focus-v2.png)
 
-更清晰的标题、更从容的留白，以及少量蓝青色提示，让视线回到名片本身。封面与上图为 **AI 生成的产品／UI 视觉提案**，并非真机照片或当前固件截图。画面资料为虚构，提案中的二维码仅作示意。
+精修设计已落实到 LVGL：更平滑的中文、更清楚的列表层级、兴趣标签、可视开关和小信封角色。上图由实际固件 UI 在 240 x 320 分辨率下渲染，使用虚构资料和可解码的测试二维码。封面仍是 **AI 生成的产品概念图**，并非设备实拍。
 
 <details>
 <summary>查看当前固件实际界面与手机编辑页</summary>
 
-![当前固件实际 LVGL 界面](assets/images/streetpass-lvgl-preview-v1.png)
+![当前固件实际 LVGL 界面](assets/images/streetpass-lvgl-preview-v2.png)
 
-使用示例资料在电脑上渲染的实际 240 x 320 LVGL 页面；尚未真机验证。当前固件仍使用这套界面，新提案尚未写入固件。
+全部 12 个实装页面，使用示例资料在电脑渲染。实体按键沿用现有导航；渲染不代表 LCD 显示效果或手机相机扫码验证。[原始视觉提案](assets/images/streetpass-ui-study-v2.png)保留作设计参考。
 
 [查看手机本地编辑页](assets/images/streetpass-phone-editor-v1.png) · [查看完整使用说明](docs/assets/streetpass-guide.zh_CN.md)
 
@@ -83,13 +83,13 @@ cd ai-passport-streetpass
 
 | 验证项目 | 已记录结果 |
 | --- | --- |
-| Build | 本地 ESP-IDF 5.5.3 构建 PASS；应用 2,383,008 / 3,145,728 字节 |
+| Build | 本地 ESP-IDF 5.5.3 构建 PASS；应用 3,133,280 / 3,145,728 字节 |
 | Host tests | PASS：协议、导航、存储和仓库检查 |
 | UI 与编辑页 | 真实 LVGL 渲染、二维码解码、桌面浏览器编辑页检查通过 |
-| Device tests | NOT RUN |
+| Device tests | 精修版：NOT RUN，USB 设备未连接。先前固件已通过烧录、启动及蓝牙广播基础检查 |
 | Unverified | 步行擦肩、手机自动弹页、耗电、无线功能内存及实体 Recovery |
 
-带日期的产物校验值和验证边界见[验证记录](docs/assets/streetpass-guide.zh_CN.md#软件验证记录2026-09-21)。上方工作流徽章显示当前远程检查状态，与这里记录的本地结果分别展示。
+带日期的产物校验值和验证边界见[验证记录](docs/assets/streetpass-guide.zh_CN.md#精修版验证2026-09-22)。上方工作流徽章显示当前远程检查状态，与这里记录的本地结果分别展示。
 
 ## 项目结构
 

@@ -17,16 +17,16 @@ An offline social-card firmware for the FoloToy AI Passport. Nearby devices exch
 
 ## A quiet interface for small encounters
 
-![Four-screen StreetPass UI study](assets/images/streetpass-ui-study-v2.png)
+![Implemented StreetPass UI](assets/images/streetpass-lvgl-focus-v2.png)
 
-Clearer titles, more breathing room, and small blue accents put the focus back on the person behind the card. The cover and the image above are **AI-generated product and UI concepts**, not device photographs or current firmware screenshots. Profiles are fictional; the concept QR is illustrative.
+The polished design is implemented in LVGL: smoother Chinese text, quieter lists, interest chips, clear switches and a small envelope mascot. The image above is rendered from the actual firmware UI at 240 x 320 with fictional profiles and valid test QR codes. The cover remains an **AI-generated product concept**, not a device photograph.
 
 <details>
 <summary>See the current firmware UI and phone editor</summary>
 
-![Actual firmware LVGL screens](assets/images/streetpass-lvgl-preview-v1.png)
+![Actual firmware LVGL screens](assets/images/streetpass-lvgl-preview-v2.png)
 
-Actual 240 x 320 LVGL pages rendered on a computer with sample data; physical-device validation is pending. The firmware still uses these pages. The new visual study has not been implemented in firmware.
+All 12 implemented pages, rendered on a computer with sample data. Physical controls keep the existing navigation; these renders do not measure LCD appearance or phone camera scanning. The [original visual study](assets/images/streetpass-ui-study-v2.png) remains available as design context.
 
 [Open the local phone editor preview](assets/images/streetpass-phone-editor-v1.png) · [Read the complete user guide](docs/assets/streetpass-guide.md)
 
@@ -83,13 +83,13 @@ The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery
 
 | Verification | Recorded result |
 | --- | --- |
-| Build | PASS locally with ESP-IDF 5.5.3; application 2,383,008 / 3,145,728 bytes |
+| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,280 / 3,145,728 bytes |
 | Host tests | PASS: protocol, navigation, storage and repository checks |
 | UI and editor | Actual LVGL rendering, QR decoding and desktop-browser editor checks passed |
-| Device tests | NOT RUN |
+| Device tests | Refined UI: NOT RUN; USB device unavailable. Earlier firmware passed USB flash, boot and BLE-advertisement smoke checks |
 | Unverified | Walking encounters, mobile captive portals, power use, radio memory and physical Recovery |
 
-See the [verification record](docs/assets/streetpass-guide.md#software-verification-record-2026-09-21) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
+See the [verification record](docs/assets/streetpass-guide.md#refined-ui-verification-2026-09-22) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
 
 ## Project map
 

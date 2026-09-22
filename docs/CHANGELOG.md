@@ -6,6 +6,8 @@
 
 ## Unreleased
 
+- Refine the StreetPass device UI with smooth common-Chinese typography, clearer spacing, unread dots, interest chips, visual switches and a small envelope mascot. Retain physical-button navigation, offline editing and existing card storage.
+
 - Add the StreetPass first-version firmware: dark physical-button UI, offline hotspot editor, public BLE card exchange, a 100-person inbox, persistent preferences, and host validation. Device acceptance remains pending.
 
 - Made mini-program BLE install compatibility a template-level invariant: fixed

@@ -89,6 +89,36 @@ int main(void) {
             moving = true;
     }
     assert(moving);
+    /* Recreate pages with maximum text and empty states, checking LVGL memory
+     * recovery after animation/QR teardown in the same 40 KB pool as firmware. */
+    strcpy(v.card.text[0], "长昵称也需要完整地显示在屏幕里");
+    v.own = v.card;
+    v.battery = -1;
+    v.nav.people = 0;
+    v.card.text[4][0] = 0;
+    size_t settled_free = 0;
+    for (int cycle = 0; cycle < 20; cycle++) {
+        for (size_t i = 0; i < sizeof pages / sizeof pages[0]; i++) {
+            v.nav.page = pages[i];
+            v.nav.tab = i == 3 ? 1 : 0;
+            sp_ui_render(&v);
+            lv_tick_inc(35);
+            lv_timer_handler();
+            assert(lv_mem_test() == LV_RESULT_OK);
+        }
+        v.nav.page = SP_HOME;
+        sp_ui_render(&v);
+        lv_tick_inc(35);
+        lv_timer_handler();
+        lv_mem_monitor_t current;
+        lv_mem_monitor(&current);
+        assert(current.free_biggest_size >= 8192);
+        if (cycle == 1)
+            settled_free = current.free_size;
+        if (cycle > 1)
+            assert(current.free_size == settled_free);
+    }
+    puts("Long text, empty states and 20 page cycles: PASS");
     lv_mem_monitor_t mem;
     lv_mem_monitor(&mem);
     printf("12 actual LVGL screens rendered; memory used %u%%, largest free block %zu\n",

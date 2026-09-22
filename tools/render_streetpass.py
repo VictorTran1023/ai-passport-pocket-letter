@@ -27,7 +27,7 @@ def main():
         config=config.replace(old,new)
     (out/'lv_conf.h').write_text(config,encoding='utf-8')
     flags=['-std=c11','-O0','-DLV_CONF_INCLUDE_SIMPLE','-Ibuild/preview','-Imain','-Imanaged_components/lvgl__lvgl',
-           'tests/render_sp_ui.c','main/sp_ui.c','assets/fonts/sp_font_16.c','assets/fonts/sp_font_24.c']
+           'tests/render_sp_ui.c','main/sp_ui.c','assets/fonts/sp_font_16.c','assets/fonts/sp_font_ui_16.c','assets/fonts/sp_font_24.c']
     if args.target:flags[:0]=['-target',args.target]
     flags += [p.relative_to(ROOT).as_posix() for p in sorted((lib/'src').rglob('*.c'))]
     exe=out/('render.exe' if os.name=='nt' else 'render')

@@ -12,10 +12,6 @@
 - 与固件集成时，参考 [`components/bsp/include/bsp_display.h`](../../components/bsp/include/bsp_display.h) 与相关示例分支的图片资源管线，转换为固件所需格式（如 RGB565 数组）。
 - 图片资源占用 Flash 与内存，集成前请评估 ESP32-C3 无 PSRAM 的限制。
 
-## 目录说明
-
-> 当前为空骨架，用于存放后续加入的图片资源。加入资源时请同步更新本 `README.md` 的索引。
-
 ## 擦肩参考与实际渲染
 
 - [确认的色卡参考](streetpass-techdark-palette-reference.png)：由用户提供，作为设计参考保存，不额外声明转载授权。
@@ -35,3 +31,7 @@
 - [擦肩故事插画](streetpass-encounter-story-v2.png)：用涂鸦说明本地编辑、蓝牙相遇与开始交谈。它是场景插画，不能证明实际擦肩成功率。
 
 这些图片按版本保留。不要把生成图片作为真实实现预览使用而不标注概念性质。参考硬件属于 FoloToy；本展示不代表官方发行或背书。
+
+## 实装界面第二版
+
+- [四页预览](streetpass-lvgl-focus-v2.png)和[全部 12 页](streetpass-lvgl-preview-v2.png)：2026-09-22 使用主机渲染器、修改后的 `main/sp_ui.c` 与虚构名片生成。PNG 拼图保留每页 240 x 320 原始分辨率。根据精修稿调整字体、留白、蓝色点缀和信封小角色，沿用实体按键导航。二维码是可正确解码的真实测试资料。这些是软件渲染，并非 LCD 实拍。

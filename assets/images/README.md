@@ -30,3 +30,7 @@ Added on 2026-09-21 for the StreetPass repository landing page. These are AI-gen
 - [Encounter story](streetpass-encounter-story-v2.png): an editorial doodle explaining local editing, BLE encounters and conversation. It is a scenario illustration, not evidence of real-world exchange reliability.
 
 Keep these images versioned. Do not replace actual implementation previews with generated art without an explicit concept caption. The referenced hardware belongs to FoloToy; the presentation does not imply an official release or endorsement.
+
+## Implemented UI, revision 2
+
+- [Four-page preview](streetpass-lvgl-focus-v2.png) and [all 12 pages](streetpass-lvgl-preview-v2.png): rendered from the revised `main/sp_ui.c` on 2026-09-22 using the host renderer and synthetic profiles. PNG montages preserve each 240 x 320 screen at native resolution. The UI study informed typography, spacing, blue accents and the envelope mascot; physical-button navigation is retained. QR payloads are real test fixtures and decode successfully. These are software renders, not LCD photographs.
