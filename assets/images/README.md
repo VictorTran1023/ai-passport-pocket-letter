@@ -42,3 +42,7 @@ Keep these images versioned. Do not replace actual implementation previews with 
 - [Current phone editor preview](pocket-letter-phone-editor-v1.png): actual embedded editor rendered in desktop Chrome with a synthetic local API.
 
 Earlier `streetpass-*` images remain as historical design and implementation records.
+
+## Community cover, Pocket Letter
+
+- [Pocket Letter community cover](pocket-letter-cover-v1.jpg): AI-generated editorial doodle showing a fictional encounter and exchange of cards. Created 2026-09-23 for this project and used as the community listing cover; it is not integrated into firmware or presented as a device photo or screenshot.
