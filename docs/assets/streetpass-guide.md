@@ -69,3 +69,10 @@ Removing contact details changes future card exchanges. Previously received copi
 - Device tests: PASS for segmented flashing, 40-second startup observation without panic/reset loops and external SP v1 BLE advertisement detection on ESP32-C3 revision 1.1 with 8 MB Flash. Existing profile/inbox, NVS/PHY, device identity and permanent Recovery digests matched before and after flashing. Startup free heap: 49,652 bytes. A verified original 8 MB backup remains local. This is a smoke test, not full device acceptance. The flashed local artifact was built before commit `c36fa49` and retains the embedded development label `f300c8b-dirty`; identify it by the checksum below.
 - Unverified: refined-UI LCD appearance and physical controls, phone QR/hotspot editing, two-board exchanges, battery life, sound and physical Recovery entry.
 - Refined merged image: 3,198,816 bytes. SHA-256: `e4fac9edf62f401e9a4c319fba18291f04bdaf934b4c6b11dd3862c413f3a886`. Local output: `build/FoloToy-AI-Passport-full.bin`; no device-specific data is included.
+
+### Fixed top titles verification (2026-09-23)
+
+- Build and host tests: PASS. Full ESP-IDF 5.5.3 gate passed; application 3,133,344 / 3,145,728 bytes. Long headings use LVGL's stationary ellipsis mode in the host renderer, while body paragraphs still scroll.
+- Device smoke tests: PASS. Segmented flashing, 40-second startup without panic/reset loops and external SP v1 BLE advertisement detection. Existing profile/inbox, NVS/PHY, cardid and Recovery digests matched before and after flashing. Startup free heap: 49,524 bytes.
+- Unverified: user confirmed the top display looks normal. Physical controls, phone hotspot/editor and two-board exchanges remain untested.
+- Flashed merged image SHA-256: `a3d4ff0a02bc53eedc8c8b2d5341e48e4291053cf928a98dcaeea6b7ce5a002e`. The local image was built before this documentation commit, so its embedded development label may show the prior commit with `-dirty`.

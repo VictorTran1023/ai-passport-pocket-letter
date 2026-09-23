@@ -69,3 +69,10 @@
 - Device tests: 精修版分段烧录、40 秒启动观察及外部 SP v1 蓝牙广播检测 PASS；未发现崩溃或重启循环。设备为 ESP32-C3 revision 1.1、8 MB Flash。刷入前后，现有名片、NVS／PHY、设备身份和永久 Recovery 的校验值一致。启动空闲堆为 49,652 字节；已校验的原始 8 MB 备份保留在本地。这是基础检查，不代表完整真机验收。本次本地产物在提交 `c36fa49` 前构建，内嵌开发标签仍为 `f300c8b-dirty`，以以下校验值识别。
 - Unverified: 精修界面的 LCD 效果与实体按键、手机扫码和热点编辑、双机交换、续航、声音、实体 Recovery 入口。
 - 精修版合并镜像：3,198,816 字节。SHA-256：`e4fac9edf62f401e9a4c319fba18291f04bdaf934b4c6b11dd3862c413f3a886`。本地产物：`build/FoloToy-AI-Passport-full.bin`，不包含设备专属资料。
+
+### 顶部标题固定显示验证（2026-09-23）
+
+- Build 和 Host tests：PASS。完整 ESP-IDF 5.5.3 检查通过；应用为 3,133,344／3,145,728 字节。主机渲染验证长标题固定显示省略号，名片正文仍可滚动。
+- Device smoke tests：PASS。分段烧录、40 秒启动观察无崩溃或重启循环，并从电脑检测到 SP v1 蓝牙广播。刷入前后，现有名片、NVS／PHY、cardid 及 Recovery 校验值一致。启动空闲堆为 49,524 字节。
+- Unverified：用户确认顶部显示正常。实体按键、手机热点编辑及双机交换仍未验证。
+- 已刷入合并镜像 SHA-256：`a3d4ff0a02bc53eedc8c8b2d5341e48e4291053cf928a98dcaeea6b7ce5a002e`。本地镜像在此次文档提交前构建，内嵌开发标签可能显示此前提交及 `-dirty`。

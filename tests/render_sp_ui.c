@@ -69,6 +69,27 @@ int main(void) {
         }
         fclose(f);
     }
+    /* Long top titles remain fixed and use ellipsis; body paragraphs still scroll. */
+    v.nav.page = SP_CARD;
+    v.nav.tab = 0;
+    strcpy(v.card.text[0], "这个名字很长请不要滚动显示");
+    v.card.text[1][0] = 0;
+    v.card.text[2][0] = 0;
+    sp_ui_render(&v);
+    bool fixed_heading = false;
+    lv_obj_t *title_root = lv_screen_active();
+    for (uint32_t i = 0; i < lv_obj_get_child_count(title_root); i++) {
+        lv_obj_t *item = lv_obj_get_child(title_root, i);
+        if (lv_obj_check_type(item, &lv_label_class) && lv_obj_get_y(item) == 35) {
+            lv_point_t extent;
+            lv_text_get_size(&extent, v.card.text[0], lv_obj_get_style_text_font(item, 0), 0, 0,
+                             LV_COORD_MAX, LV_TEXT_FLAG_NONE);
+            assert(extent.x > lv_obj_get_width(item));
+            assert(lv_label_get_long_mode(item) == LV_LABEL_LONG_DOT);
+            fixed_heading = true;
+        }
+    }
+    assert(fixed_heading);
     /* Exercise valid maximum-length ASCII paragraphs, then verify they scroll inside a viewport. */
     v.nav.page = SP_CARD;
     v.nav.tab = 0;

@@ -83,7 +83,7 @@ cd ai-passport-streetpass
 
 | 验证项目 | 已记录结果 |
 | --- | --- |
-| Build | 本地 ESP-IDF 5.5.3 构建 PASS；应用 3,133,280 / 3,145,728 字节 |
+| Build | 本地 ESP-IDF 5.5.3 构建 PASS；应用 3,133,344 / 3,145,728 字节 |
 | Host tests | PASS：协议、导航、存储和仓库检查 |
 | UI 与编辑页 | 真实 LVGL 渲染、二维码解码、桌面浏览器编辑页检查通过 |
 | Device tests | 精修版烧录、40 秒启动观察和蓝牙广播基础检查 PASS；完整真机验收仍待完成 |

@@ -83,7 +83,7 @@ The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery
 
 | Verification | Recorded result |
 | --- | --- |
-| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,280 / 3,145,728 bytes |
+| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,344 / 3,145,728 bytes |
 | Host tests | PASS: protocol, navigation, storage and repository checks |
 | UI and editor | Actual LVGL rendering, QR decoding and desktop-browser editor checks passed |
 | Device tests | PASS for refined-UI USB flash, 40-second boot observation and BLE-advertisement smoke checks; full device acceptance pending |

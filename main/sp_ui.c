@@ -45,6 +45,7 @@ static void scroll_body(void *obj, int32_t y) { lv_obj_set_y(obj, y); }
 static lv_obj_t *text(lv_obj_t *parent, int x, int y, int w, int h, const char *s, uint32_t color,
                       bool title) {
     bool paragraph = !title && h > 26;
+    bool fixed_top = title || (!paragraph && parent == screen && y < 100);
     if (paragraph) {
         lv_obj_t *viewport = lv_obj_create(parent);
         lv_obj_remove_style_all(viewport);
@@ -59,7 +60,9 @@ static lv_obj_t *text(lv_obj_t *parent, int x, int y, int w, int h, const char *
     lv_obj_set_size(o, w, h);
     lv_obj_set_style_text_font(o, title ? &title_font : &body_font, 0);
     lv_obj_set_style_text_color(o, lv_color_hex(color), 0);
-    lv_label_set_long_mode(o, paragraph ? LV_LABEL_LONG_WRAP : LV_LABEL_LONG_SCROLL_CIRCULAR);
+    lv_label_set_long_mode(o, paragraph   ? LV_LABEL_LONG_WRAP
+                              : fixed_top ? LV_LABEL_LONG_DOT
+                                          : LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_label_set_text(o, s);
     if (paragraph) {
         lv_obj_set_height(o, LV_SIZE_CONTENT);
