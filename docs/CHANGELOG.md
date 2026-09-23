@@ -6,6 +6,8 @@
 
 ## Unreleased
 
+- Add double-OK manual backlight-off and 30-second automatic screen-off while BLE encounters continue; consume the first function-key action to wake without changing the page.
+
 - Rename the product to Pocket Letter across the device, local editor, Wi-Fi hotspot, Bluetooth display name and repository presentation; preserve the SP v1 card protocol and existing NVS namespace for compatibility.
 
 - Keep top titles and profile names stationary, showing an ellipsis when too long while retaining scrolling for longer card content.

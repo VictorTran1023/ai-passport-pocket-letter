@@ -369,7 +369,7 @@ void sp_ui_render(const sp_view_t *v) {
         heading("设置");
         setting(82, "相遇模式", !v->paused, v->nav.selected == 0);
         setting(132, "提示音", v->sound, v->nav.selected == 1);
-        setting(182, "30 秒调暗", v->dim, v->nav.selected == 2);
+        setting(182, "30 秒自动息屏", v->dim, v->nav.selected == 2);
         row(232, 43, "管理名片", NULL, v->nav.selected == 3, NULL);
         foot(*v->status ? v->status : "上下选择 · OK 更改");
         break;

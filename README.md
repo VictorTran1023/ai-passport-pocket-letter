@@ -41,7 +41,7 @@ All 12 implemented pages, rendered on a computer with sample data. Physical cont
 | Inbox | Up to 100 people, revision deduplication, unread updates, favorites and deletion |
 | Phone editing | Temporary WPA2 hotspot, Wi-Fi QR, local browser editor and a fallback URL QR |
 | Contact sharing | Optional contact fields; displayed text can be scanned as a QR |
-| Daily use | Physical UP/DOWN/OK controls, saved settings, optional sound and idle dimming |
+| Daily use | Physical UP/DOWN/OK controls, saved settings, optional sound and screen-off with BLE still running |
 
 At capacity, the oldest non-favorite card is replaced. An inbox containing only favorites rejects new cards. NFC, private chat, identity verification and cloud synchronization are outside this version.
 
@@ -57,6 +57,8 @@ Start with a little about yourself. Let shared interests start a conversation. T
 4. Carry two compatible devices nearby. Open the inbox to read received cards, discover shared interests, or show a contact QR.
 
 Use UP/DOWN to select, OK to open, and hold OK to return. On another person's card, hold UP to toggle favorite or hold DOWN to request deletion; deletion requires a separate confirmation. See the [full button table](docs/assets/streetpass-guide.md#buttons).
+
+Double-press OK to turn off the backlight while BLE encounters continue. The first UP, DOWN, or OK action wakes the screen without activating an item. With **30-second automatic screen-off** enabled, idle use also turns off the backlight; phone editing is exempt. The separate hardware power button is not a firmware input, so a short press of that button cannot trigger this behavior on the documented board.
 
 **Privacy:** cards are public to nearby compatible BLE clients. Share only what you are comfortable making public. Removing a field affects future exchanges and cannot remotely erase previously received copies. Contact QR codes contain text; they do not automatically add a WeChat contact.
 
@@ -83,13 +85,13 @@ The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery
 
 | Verification | Recorded result |
 | --- | --- |
-| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,376 / 3,145,728 bytes |
+| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,456 / 3,145,728 bytes |
 | Host tests | PASS: protocol, navigation, storage and repository checks |
 | UI and editor | Actual LVGL rendering, QR decoding and desktop-browser editor checks passed |
-| Device tests | PASS for Pocket Letter USB flash, 40-second boot observation and compatible BLE-advertisement smoke checks; full device acceptance pending |
+| Device tests | PASS for screen-off firmware USB flash, 40-second boot observation and compatible BLE-advertisement smoke checks; full device acceptance pending |
 | Unverified | Walking encounters, mobile captive portals, power use, radio memory and physical Recovery |
 
-See the [verification record](docs/assets/streetpass-guide.md#pocket-letter-verification-2026-09-23) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
+See the [verification record](docs/assets/streetpass-guide.md#screen-off-verification-2026-09-23) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
 
 ## Project map
 
@@ -98,7 +100,7 @@ See the [verification record](docs/assets/streetpass-guide.md#pocket-letter-veri
 
 | Path | Responsibility |
 | --- | --- |
-| `main/sp_core.*`, `main/sp_nav.*` | Bounded card format, BLE fragments and navigation logic |
+| `main/sp_core.*`, `main/sp_nav.*`, `main/sp_screen.*` | Bounded card format, BLE fragments, navigation and screen-off timing |
 | `main/sp_store.*` | Local profile and inbox persistence |
 | `main/sp_ble.*` | BLE discovery and transfer state machine |
 | `main/sp_web.*`, `main/sp_editor.html` | Temporary hotspot and embedded phone editor |

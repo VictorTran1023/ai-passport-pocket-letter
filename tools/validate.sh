@@ -34,6 +34,9 @@ run_static_checks() {
     "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Imain \
         tests/test_sp_nav.c main/sp_nav.c -o "${test_dir}/test_sp_nav"
     "${test_dir}/test_sp_nav"
+    "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Imain \
+        tests/test_sp_screen.c main/sp_screen.c -o "${test_dir}/test_sp_screen"
+    "${test_dir}/test_sp_screen"
     "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Itests/sp_fakes -Imain \
         tests/test_sp_store.c main/sp_store.c main/sp_core.c -o "${test_dir}/test_sp_store"
     "${test_dir}/test_sp_store"

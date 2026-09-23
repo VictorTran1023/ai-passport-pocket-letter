@@ -10,6 +10,7 @@
 #include "freertos/queue.h"
 #include "nvs_flash.h"
 #include "sp_ble.h"
+#include "sp_screen.h"
 #include "sp_store.h"
 #include "sp_ui.h"
 #include "sp_web.h"
@@ -18,6 +19,7 @@
 static const char *TAG = "streetpass";
 typedef struct {
     bool incoming;
+    bool screen_toggle;
     sp_key_t key;
     uint32_t generation;
     uint16_t length;
@@ -27,8 +29,9 @@ static QueueHandle_t events;
 static sp_view_t view = {.battery = -1, .active_slot = -1, .dim = true};
 static sp_nav_t before_notice;
 static int notice_slot = -1;
-static int64_t active_at, edit_at, notice_until, battery_at;
-static bool editing, dimmed, audio_ready;
+static int64_t edit_at, notice_until, battery_at;
+static bool editing, audio_ready;
+static sp_screen_t screen;
 static void render(void) {
     if (bsp_lvgl_lock(1000)) {
         sp_ui_render(&view);
@@ -66,6 +69,8 @@ static void on_key(bsp_btn_t button, bsp_btn_ev_t ev, void *arg) {
         e.key = button == BSP_BTN_UP ? SP_UP : button == BSP_BTN_DOWN ? SP_DOWN : SP_OK;
     else if (ev == BSP_BTN_LONG)
         e.key = button == BSP_BTN_UP ? SP_HOLD_UP : button == BSP_BTN_DOWN ? SP_HOLD_DOWN : SP_BACK;
+    else if (ev == BSP_BTN_DOUBLE && button == BSP_BTN_OK)
+        e.screen_toggle = true;
     else
         return;
     xQueueSend(events, &e, 0);
@@ -214,7 +219,7 @@ static void action(sp_action_t a, int previous_selection) {
 }
 static void worker(void *arg) {
     (void)arg;
-    active_at = esp_timer_get_time();
+    sp_screen_init(&screen, esp_timer_get_time());
     radio_start();
     index_refresh();
     render();
@@ -238,9 +243,6 @@ static void worker(void *arg) {
                         notice_slot = slot;
                         view.nav.page = SP_NOTICE;
                         notice_until = esp_timer_get_time() + 4000000;
-                        active_at = esp_timer_get_time();
-                        bsp_display_backlight(35);
-                        dimmed = false;
                         chime();
                         redraw = true;
                     }
@@ -249,10 +251,10 @@ static void worker(void *arg) {
                     redraw = true;
                 }
             } else {
-                active_at = esp_timer_get_time();
-                if (dimmed) {
-                    bsp_display_backlight(35);
-                    dimmed = false;
+                sp_screen_change_t change =
+                    sp_screen_input(&screen, e.screen_toggle, esp_timer_get_time());
+                if (change != SP_SCREEN_UNCHANGED) {
+                    bsp_display_backlight(change == SP_SCREEN_TURN_ON ? 35 : 0);
                     continue;
                 }
                 if (view.nav.page == SP_NOTICE) {
@@ -290,10 +292,8 @@ static void worker(void *arg) {
             battery_at = now + 30000000;
             redraw = true;
         }
-        if (view.dim && !editing && !dimmed && now - active_at > 30000000) {
-            bsp_display_backlight(3);
-            dimmed = true;
-        }
+        if (sp_screen_idle(&screen, view.dim, editing, now) == SP_SCREEN_TURN_OFF)
+            bsp_display_backlight(0);
         if (redraw)
             render();
     }

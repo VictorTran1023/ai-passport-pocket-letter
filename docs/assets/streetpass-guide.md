@@ -24,7 +24,9 @@ The application stores one own card and up to 100 people. A matching or older re
 | Contact list | Select | Show the contact text as a QR | Back |
 | Edit | No action | Switch Wi-Fi / editor QR | Stop hotspot and exit |
 
-The first key press after idle dimming restores brightness without activating an item. Settings for encounters, sound and dimming are saved locally. Unsupported characters outside the font coverage may display as placeholders; full UTF-8 text remains in the card. Contact QR codes contain the displayed text; WeChat does not auto-add a contact.
+Double-press OK on any page to turn off the backlight. The first UP, DOWN, or OK action wakes the screen without activating an item; while dark, BLE encounters and local card storage continue. If 30-second automatic screen-off is enabled in Settings, idle use turns off the backlight, but phone editing does not automatically darken. An incoming card does not wake the screen. The separate hardware power button is not connected to the firmware button API; its short press cannot be assigned to screen-off on the documented board. This is a backlight-off mode, not deep sleep or a measured battery-life claim.
+
+Settings for encounters, sound and automatic screen-off are saved locally. Unsupported characters outside the font coverage may display as placeholders; full UTF-8 text remains in the card. Contact QR codes contain the displayed text; WeChat does not auto-add a contact.
 
 ## Implementation boundaries
 
@@ -83,3 +85,10 @@ Removing contact details changes future card exchanges. Previously received copi
 - Host tests: PASS. Repository and protocol/navigation/storage tests, all 12 actual LVGL renders, 20 page cycles, three independently decoded QR payloads, and the desktop phone editor with fixture API all passed.
 - Device smoke tests: PASS. Segmented USB flash, 40-second startup without panic/reset loops, and an external compatible SP v1 BLE advertisement check passed. Existing profile/inbox, NVS/PHY, `cardid` and Recovery digests matched before and after flashing. Startup free heap: 49,520 bytes. The user confirmed that the new product title displays correctly and stays stationary. The image was built before this documentation commit and embeds the prior development commit label with `-dirty`; identify it by the checksum above.
 - Unverified: physical button flow, phone Wi-Fi QR/hotspot/editor on iOS and Android, two-device exchanges, battery use, sound and physical Recovery entry. The existing `streetpass` NVS namespace and SP v1 payload remain unchanged for compatibility.
+
+### Screen-off verification (2026-09-23)
+
+- Build: PASS. The complete ESP-IDF 5.5.3 gate passed, including the mini-program BLE and Recovery layout contract. Application: 3,133,456 / 3,145,728 bytes, leaving 12,272 bytes. Merged image: 3,198,992 bytes; SHA-256: `265cc81bec73d51a1797519abfb0570f33d0cc02a60c2aaedd01139efaee3308`.
+- Host tests: PASS. The screen state test covers double-OK off/on, wake consuming the first key event, the 30-second boundary, the disabled setting and the phone-editing exemption. Repository, protocol, navigation and storage checks passed. All 12 actual LVGL pages rendered, including the updated Settings page.
+- Device smoke tests: PASS. Segmented USB flashing preserved profile/inbox, NVS/PHY, `cardid` and Recovery digests. A 40-second startup showed no panic or reset loop; startup free heap was 49,520 bytes. External scanning detected a compatible SP v1 advertisement after the screen-off timeout window.
+- Unverified: manual double-OK and wake behavior on the physical buttons, measured current or battery-life improvement, phone editing, two-device exchanges and physical Recovery entry. The image was built before this documentation commit and embeds a `-dirty` development label; identify it by the checksum above.
