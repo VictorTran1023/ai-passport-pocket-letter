@@ -1,8 +1,8 @@
 [简体中文](streetpass-guide.zh_CN.md) · **English**
 
-# StreetPass first-version guide
+# Pocket Letter first-version guide
 
-StreetPass replaces the demo menu with the approved dark social-card interface. Its BLE and Wi-Fi behavior still needs physical-device acceptance; a successful build is not a passing hardware test. No account, hosted page, or Internet access is required for editing and card exchange.
+Pocket Letter replaces the demo menu with the approved dark social-card interface. Its BLE and Wi-Fi behavior still needs physical-device acceptance; a successful build is not a passing hardware test. No account, hosted page, or Internet access is required for editing and card exchange.
 
 ## Use
 
@@ -38,18 +38,18 @@ The first key press after idle dimming restores brightness without activating an
 
 ## Verification and next device checks
 
-Run `./tools/validate.sh` in ESP-IDF 5.5.3. It checks documentation/workflows, original and StreetPass host tests, then builds and verifies the merged image. Storage host tests use a fake NVS backend; they do not validate flash wear or power-loss behavior.
+Run `./tools/validate.sh` in ESP-IDF 5.5.3. It checks documentation/workflows, original and Pocket Letter host tests, then builds and verifies the merged image. Storage host tests use a fake NVS backend; they do not validate flash wear or power-loss behavior.
 
 `tests/render_sp_ui.c` renders the actual LVGL pages on a host with sample data. Its 40 KB LVGL pool matches the firmware setting; it does not model the ESP32's total RAM, DMA, Wi-Fi or BLE consumption.
 
 Before normal use, test two boards: passing at walking speed, long profiles, simultaneous discovery, repeated encounters and updates, interrupted transfers, favorites at capacity, reboot persistence, idle battery life, sound, and repeated BLE-to-Wi-Fi transitions. Test QR scanning, captive-login behavior, fallback URL and interrupted saves on iOS and Android. Verify the permanent Recovery hook on the actual board. The refined UI passed USB flashing, boot and BLE-advertisement smoke checks. No hardware-accepted release has been published.
 
-- [Actual UI preview](../../assets/images/streetpass-lvgl-preview-v2.png)
+- [Actual UI preview](../../assets/images/pocket-letter-lvgl-preview-v1.png)
 - [Host rendering tool](../../tools/render_streetpass.py)
 
 Long introductions and messages automatically scroll within their display areas.
 
-- [Phone editor preview](../../assets/images/streetpass-phone-editor-v1.png)
+- [Phone editor preview](../../assets/images/pocket-letter-phone-editor-v1.png)
 
 Removing contact details changes future card exchanges. Previously received copies cannot be deleted remotely; another device receives the revised card on a later successful encounter.
 
@@ -76,3 +76,10 @@ Removing contact details changes future card exchanges. Previously received copi
 - Device smoke tests: PASS. Segmented flashing, 40-second startup without panic/reset loops and external SP v1 BLE advertisement detection. Existing profile/inbox, NVS/PHY, cardid and Recovery digests matched before and after flashing. Startup free heap: 49,524 bytes.
 - Unverified: user confirmed the top display looks normal. Physical controls, phone hotspot/editor and two-board exchanges remain untested.
 - Flashed merged image SHA-256: `a3d4ff0a02bc53eedc8c8b2d5341e48e4291053cf928a98dcaeea6b7ce5a002e`. The local image was built before this documentation commit, so its embedded development label may show the prior commit with `-dirty`.
+
+### Pocket Letter verification (2026-09-23)
+
+- Build: PASS. Complete ESP-IDF 5.5.3 gate and merged-image contract passed. Application: 3,133,376 / 3,145,728 bytes, leaving 12,352 bytes. The merged image is 3,198,912 bytes; SHA-256: `034e1538d7c9209223cd3c600c1c0de0fcdd92c8d296c9b9651365eb4596179b`.
+- Host tests: PASS. Repository and protocol/navigation/storage tests, all 12 actual LVGL renders, 20 page cycles, three independently decoded QR payloads, and the desktop phone editor with fixture API all passed.
+- Device smoke tests: PASS. Segmented USB flash, 40-second startup without panic/reset loops, and an external compatible SP v1 BLE advertisement check passed. Existing profile/inbox, NVS/PHY, `cardid` and Recovery digests matched before and after flashing. Startup free heap: 49,520 bytes. The user confirmed that the new product title displays correctly and stays stationary. The image was built before this documentation commit and embeds the prior development commit label with `-dirty`; identify it by the checksum above.
+- Unverified: physical button flow, phone Wi-Fi QR/hotspot/editor on iOS and Android, two-device exchanges, battery use, sound and physical Recovery entry. The existing `streetpass` NVS namespace and SP v1 payload remain unchanged for compatibility.

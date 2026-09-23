@@ -44,8 +44,8 @@
 - [SECURITY.zh_CN.md](../.github/SECURITY.zh_CN.md)：安全漏洞报告流程。
 - [SUPPORT.zh_CN.md](../.github/SUPPORT.zh_CN.md)：使用支持与问题反馈渠道。
 
-- [StreetPass development](assets/streetpass-development.zh_CN.md)
-- [StreetPass decisions](assets/streetpass-decisions.zh_CN.md)
+- [口袋来信开发说明](assets/streetpass-development.zh_CN.md)
+- [口袋来信设计决策](assets/streetpass-decisions.zh_CN.md)
 
-- [StreetPass guide](assets/streetpass-guide.zh_CN.md)
-- [擦肩项目首页](../README.zh_CN.md)
+- [口袋来信使用指南](assets/streetpass-guide.zh_CN.md)
+- [口袋来信项目首页](../README.zh_CN.md)

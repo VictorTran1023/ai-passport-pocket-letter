@@ -6,6 +6,8 @@
 
 ## Unreleased
 
+- Rename the product to Pocket Letter across the device, local editor, Wi-Fi hotspot, Bluetooth display name and repository presentation; preserve the SP v1 card protocol and existing NVS namespace for compatibility.
+
 - Keep top titles and profile names stationary, showing an ellipsis when too long while retaining scrolling for longer card content.
 
 - Refine the StreetPass device UI with smooth common-Chinese typography, clearer spacing, unread dots, interest chips, visual switches and a small envelope mascot. Retain physical-button navigation, offline editing and existing card storage.

@@ -12,7 +12,7 @@
 - 与固件集成时，参考 [`components/bsp/include/bsp_display.h`](../../components/bsp/include/bsp_display.h) 与相关示例分支的图片资源管线，转换为固件所需格式（如 RGB565 数组）。
 - 图片资源占用 Flash 与内存，集成前请评估 ESP32-C3 无 PSRAM 的限制。
 
-## 擦肩参考与实际渲染
+## 早期设计参考与实际渲染
 
 - [确认的色卡参考](streetpass-techdark-palette-reference.png)：由用户提供，作为设计参考保存，不额外声明转载授权。
 - [确认的设计总览](streetpass-techdark-ui-overview-v1.png)：AI 生成的视觉提案，二维码是示意图案。
@@ -35,3 +35,11 @@
 ## 实装界面第二版
 
 - [四页预览](streetpass-lvgl-focus-v2.png)和[全部 12 页](streetpass-lvgl-preview-v2.png)：2026-09-22 使用主机渲染器、修改后的 `main/sp_ui.c` 与虚构名片生成。PNG 拼图保留每页 240 x 320 原始分辨率。根据精修稿调整字体、留白、蓝色点缀和信封小角色，沿用实体按键导航。二维码是可正确解码的真实测试资料。这些是软件渲染，并非 LCD 实拍。
+
+## 口袋来信：当前仓库展示
+
+- [口袋来信封面](pocket-letter-hero-v1.png)：在原擦肩封面基础上使用 AI 编辑，保留概念设备构图并替换名称。屏幕是示意图，不是设备实拍。
+- [当前四页 LVGL 预览](pocket-letter-lvgl-focus-v1.png)及[全部 12 页](pocket-letter-lvgl-preview-v1.png)：更名后由实际固件以虚构资料和二维码测试数据渲染的 240 x 320 页面，画面中的测试密码不是设备秘密。
+- [当前手机编辑页预览](pocket-letter-phone-editor-v1.png)：真实内置编辑页在桌面 Chrome 中使用本地模拟接口渲染。
+
+此前 `streetpass-*` 图片保留为历史设计和实现记录。

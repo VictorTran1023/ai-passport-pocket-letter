@@ -4,7 +4,7 @@
 
 # 使用支持
 
-擦肩应用的问题请在[本仓库 issue](https://github.com/VictorTran1023/ai-passport-streetpass/issues)反馈，先阅读[擦肩指南](../docs/assets/streetpass-guide.zh_CN.md)。下方硬件参考描述上游平台。
+口袋来信应用的问题请在[本仓库 issue](https://github.com/VictorTran1023/ai-passport-pocket-letter/issues)反馈，先阅读[口袋来信指南](../docs/assets/streetpass-guide.zh_CN.md)。下方硬件参考描述上游平台。
 
 FoloToy AI Passport 是开源硬件与固件。社区可以帮助确认可复现的问题和改进方向，
 但不承诺为每个自定义硬件环境提供一对一排障或商业服务支持。

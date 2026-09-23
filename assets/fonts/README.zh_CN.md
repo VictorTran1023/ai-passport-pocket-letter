@@ -12,7 +12,7 @@
 - 若需集成到 ESP-IDF 固件，参考 [`components/bsp/include/bsp_display.h`](../../components/bsp/include/bsp_display.h) 与 LVGL 字体接口，将字库转换为对应格式并放入正确资源目录。
 - 字库占用 Flash 与内存，需在集成前评估 ESP32-C3 无 PSRAM 的限制（详见 `docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.md`）。
 
-## 擦肩
+## 口袋来信
 
 - `sp_font_16.c`：Noto Sans SC，字重 500，16 像素，压缩 1 bpp；包含 ASCII、CJK 基本汉字、中日韩／全角标点及界面分隔符。
 - `sp_font_ui_16.c`：字重 500，16 像素，压缩 2 bpp；覆盖 3,755 个 GB2312 一级汉字、ASCII 和标点，使用 `sp_font_16` 回退到完整基本汉字区。

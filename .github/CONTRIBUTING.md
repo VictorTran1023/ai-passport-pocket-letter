@@ -4,7 +4,7 @@
 
 # Contributing
 
-StreetPass is an independent offline social-card application built on FoloToy AI Passport. Contributions to the application belong in this repository; hardware documentation and baseline tools retain their upstream context.
+Pocket Letter is an independent offline social-card application built on FoloToy AI Passport. Contributions to the application belong in this repository; hardware documentation and baseline tools retain their upstream context.
 
 ## Before you start
 
@@ -16,7 +16,7 @@ StreetPass is an independent offline social-card application built on FoloToy AI
 - Follow [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) when participating in the
   community. For ordinary usage questions, see [`SUPPORT.md`](SUPPORT.md).
 - Do not commit credentials, tokens, authorization files, or personal data.
-- This standalone repository maintains StreetPass on `main`. Open focused changes on a separate branch and target `main`; inherited fork synchronization guidance describes the upstream template.
+- This standalone repository maintains Pocket Letter on `main`. Open focused changes on a separate branch and target `main`; inherited fork synchronization guidance describes the upstream template.
 
 ## Development and verification
 

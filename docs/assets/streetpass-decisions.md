@@ -1,6 +1,6 @@
 [简体中文](streetpass-decisions.zh_CN.md) · **English**
 
-# StreetPass confirmed design decisions
+# Pocket Letter confirmed design decisions
 
 Recorded: 2026-09-13; implementation update: 2026-09-20. The first software implementation is available in this branch; physical-device acceptance is pending. See the [current guide](streetpass-guide.md).
 
@@ -38,4 +38,4 @@ The user approved `streetpass-techdark-ui-overview-v1.png` after reviewing the p
 
 ## Repository presentation update (2026-09-21)
 
-The repository cover, four-screen UI study and illustrated encounter flow are documented in the [image index](../../assets/images/README.md#repository-presentation-revision-2). They refine presentation within the approved charcoal and blue palette. They are conceptual artwork, not an implemented UI revision or a replacement for device acceptance. Current implementation screenshots remain available in the README's expandable section.
+The earlier repository cover, four-screen UI study and illustrated encounter flow are documented in the [image index](../../assets/images/README.md#repository-presentation-revision-2). They refined presentation within the approved charcoal and blue palette. Those images are historical concepts, not device test evidence; current Pocket Letter renders are linked from the README.

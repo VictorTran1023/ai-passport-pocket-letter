@@ -4,7 +4,7 @@
 
 # 贡献指南
 
-擦肩是基于 FoloToy AI Passport 的独立离线社交名片应用。应用相关贡献在本仓库处理，硬件文档和基础工具保留上游语境。
+口袋来信是基于 FoloToy AI Passport 的独立离线社交名片应用。应用相关贡献在本仓库处理，硬件文档和基础工具保留上游语境。
 
 ## 开始之前
 
@@ -13,7 +13,7 @@
   [AI 硬件开发指南](../docs/hardware-design/AI_HARDWARE_DEVELOPMENT_GUIDE.zh_CN.md) 的完整硬件上下文。
 - 参与社区时请遵守 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)；普通使用问题见 [`SUPPORT.md`](SUPPORT.md)。
 - 不要提交凭证、令牌、授权文件或个人数据。
-- 本独立仓库在 `main` 维护擦肩。请在单独分支提交聚焦的改动并面向 `main` 发起 PR；继承的 fork 同步约定描述上游模板。
+- 本独立仓库在 `main` 维护口袋来信。请在单独分支提交聚焦的改动并面向 `main` 发起 PR；继承的 fork 同步约定描述上游模板。
 
 ## 开发与验证
 

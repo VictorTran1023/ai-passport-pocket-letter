@@ -1,8 +1,8 @@
 [简体中文](streetpass-development.zh_CN.md) · **English**
 
-# StreetPass implementation plan
+# Pocket Letter implementation plan
 
-Scope: [product decisions](streetpass-decisions.md). The implementation was developed in an isolated worktree and is maintained as a standalone StreetPass repository. Hardware acceptance remains pending; no server setup is required.
+Scope: [product decisions](streetpass-decisions.md). The implementation was developed in an isolated worktree and is maintained as a standalone Pocket Letter repository. Hardware acceptance remains pending; no server setup is required.
 
 1. Implement and test bounded UTF-8 cards, versioned wire encoding, ordered BLE fragments, deterministic connection roles, and inbox eviction protecting favorites.
 2. Persist an own card and up to 100 peers in a dedicated NVS partition after protected cardid. Commit before reporting success; never erase identity or Recovery on initialization failure.

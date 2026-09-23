@@ -11,7 +11,7 @@ Store reusable font files and generated font sources here.
 - Check Flash and internal-RAM impact before adding a font; the ESP32-C3 has no PSRAM.
 - Do not commit fonts whose license does not permit redistribution.
 
-## StreetPass
+## Pocket Letter
 
 - `sp_font_16.c`: Noto Sans SC, weight 500, 16 px, compressed 1 bpp; ASCII, CJK basic characters, CJK/fullwidth punctuation and UI separators.
 - `sp_font_ui_16.c`: weight 500, 16 px, compressed 2 bpp; 3,755 GB2312 level-one Han characters, ASCII and punctuation, with `sp_font_16` as the complete basic-CJK fallback.

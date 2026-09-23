@@ -41,8 +41,8 @@ int main(void) {
         v.order[i] = i;
     }
     v.index[0].unread = true;
-    v.wifi_qr = "WIFI:T:WPA;S:StreetPass-Preview;P:preview-only-123;;";
-    v.ssid = "StreetPass-Preview";
+    v.wifi_qr = "WIFI:T:WPA;S:PocketLetter-Preview;P:preview-only-123;;";
+    v.ssid = "PocketLetter-Preview";
     strcpy(v.notice, "遇见了阿七");
     const sp_page_t pages[] = {SP_HOME,     SP_INBOX,    SP_CARD,   SP_CARD,
                                SP_CONTACTS, SP_QR,       SP_OWN,    SP_EDIT_WIFI,

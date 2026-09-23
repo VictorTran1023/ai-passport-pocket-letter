@@ -271,11 +271,11 @@ void sp_ui_render(const sp_view_t *v) {
     const char *contact_names[] = {"邮箱", "Telegram", "微信"};
     switch (v->nav.page) {
     case SP_HOME:
-        heading("擦肩");
+        heading("口袋来信");
         envelope(176, 52);
         text(screen, 16, 78, 151, 22,
              *v->status ? v->status
-                        : (v->paused        ? "已暂停擦肩"
+                        : (v->paused        ? "已暂停相遇"
                            : v->radio_ready ? "等待下一次相遇"
                                             : "蓝牙启动中…"),
              MUTED, false);
@@ -367,7 +367,7 @@ void sp_ui_render(const sp_view_t *v) {
     }
     case SP_SETTINGS:
         heading("设置");
-        setting(82, "擦肩模式", !v->paused, v->nav.selected == 0);
+        setting(82, "相遇模式", !v->paused, v->nav.selected == 0);
         setting(132, "提示音", v->sound, v->nav.selected == 1);
         setting(182, "30 秒调暗", v->dim, v->nav.selected == 2);
         row(232, 43, "管理名片", NULL, v->nav.selected == 3, NULL);

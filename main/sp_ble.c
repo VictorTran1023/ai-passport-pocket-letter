@@ -61,9 +61,7 @@ static int write_done(uint16_t h, const struct ble_gatt_error *error, struct ble
                       void *arg);
 static int read_done(uint16_t h, const struct ble_gatt_error *error, struct ble_gatt_attr *attr,
                      void *arg);
-static uint16_t u16(const uint8_t *p) {
-    return (uint16_t)p[0] | (uint16_t)p[1] << 8;
-}
+static uint16_t u16(const uint8_t *p) { return (uint16_t)p[0] | (uint16_t)p[1] << 8; }
 static void put16(uint8_t *p, uint16_t n) {
     p[0] = (uint8_t)n;
     p[1] = (uint8_t)(n >> 8);
@@ -481,7 +479,7 @@ esp_err_t sp_ble_start(const sp_card_t *own, sp_ble_receive_fn callback) {
     }
     ble_svc_gap_init();
     ble_svc_gatt_init();
-    ble_svc_gap_device_name_set("StreetPass");
+    ble_svc_gap_device_name_set("Pocket Letter");
     int rc = ble_gatts_count_cfg(services);
     if (!rc)
         rc = ble_gatts_add_svcs(services);
@@ -542,6 +540,4 @@ esp_err_t sp_ble_stop(void) {
 void sp_ble_complete(uint32_t gen, bool saved) {
     atomic_store(&receipt, (gen << 2) | (saved ? 1 : 2));
 }
-bool sp_ble_ready(void) {
-    return atomic_load(&ready);
-}
+bool sp_ble_ready(void) { return atomic_load(&ready); }

@@ -1,34 +1,34 @@
 [简体中文](README.zh_CN.md) · **English**
 
-![StreetPass product concept](assets/images/streetpass-hero-v2.png)
+![Pocket Letter product concept](assets/images/pocket-letter-hero-v1.png)
 
-# StreetPass for AI Passport
+# Pocket Letter for AI Passport
 
 **Carry a little about yourself. Meet someone along the way.**
 
 An offline social-card firmware for the FoloToy AI Passport. Nearby devices exchange public cards over Bluetooth; a phone edits your card through the device's own Wi-Fi hotspot. No account, cloud server, Internet connection, or companion app is needed during use.
 
-[![Checks](https://github.com/VictorTran1023/ai-passport-streetpass/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorTran1023/ai-passport-streetpass/actions/workflows/ci.yml)
+[![Checks](https://github.com/VictorTran1023/ai-passport-pocket-letter/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorTran1023/ai-passport-pocket-letter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **Status: first software prototype.** Local firmware build and host tests pass. Two-device exchanges and phone interoperability still require hardware testing. This is an independent application built on [FoloToy AI Passport](https://github.com/FoloToy/ai-passport), not an official FoloToy release.
 
-[User guide](docs/assets/streetpass-guide.md) · [Phone editor](assets/images/streetpass-phone-editor-v1.png) · [Build setup](docs/development/environment-setup.md) · [Report a bug](https://github.com/VictorTran1023/ai-passport-streetpass/issues)
+[User guide](docs/assets/streetpass-guide.md) · [Phone editor](assets/images/pocket-letter-phone-editor-v1.png) · [Build setup](docs/development/environment-setup.md) · [Report a bug](https://github.com/VictorTran1023/ai-passport-pocket-letter/issues)
 
 ## A quiet interface for small encounters
 
-![Implemented StreetPass UI](assets/images/streetpass-lvgl-focus-v2.png)
+![Implemented Pocket Letter UI](assets/images/pocket-letter-lvgl-focus-v1.png)
 
 The polished design is implemented in LVGL: smoother Chinese text, quieter lists, interest chips, clear switches and a small envelope mascot. The image above is rendered from the actual firmware UI at 240 x 320 with fictional profiles and valid test QR codes. The cover remains an **AI-generated product concept**, not a device photograph.
 
 <details>
 <summary>See the current firmware UI and phone editor</summary>
 
-![Actual firmware LVGL screens](assets/images/streetpass-lvgl-preview-v2.png)
+![Actual firmware LVGL screens](assets/images/pocket-letter-lvgl-preview-v1.png)
 
 All 12 implemented pages, rendered on a computer with sample data. Physical controls keep the existing navigation; these renders do not measure LCD appearance or phone camera scanning. The [original visual study](assets/images/streetpass-ui-study-v2.png) remains available as design context.
 
-[Open the local phone editor preview](assets/images/streetpass-phone-editor-v1.png) · [Read the complete user guide](docs/assets/streetpass-guide.md)
+[Open the local phone editor preview](assets/images/pocket-letter-phone-editor-v1.png) · [Read the complete user guide](docs/assets/streetpass-guide.md)
 
 </details>
 
@@ -68,8 +68,8 @@ Use UP/DOWN to select, OK to open, and hold OK to return. On another person's ca
 Target: **ESP32-C3, 8 MB Flash, no PSRAM, ESP-IDF 5.5.3**. Follow the [environment setup](docs/development/environment-setup.md) for prerequisites and Windows setup. In an ESP-IDF-enabled Bash shell:
 
 ```bash
-git clone https://github.com/VictorTran1023/ai-passport-streetpass.git
-cd ai-passport-streetpass
+git clone https://github.com/VictorTran1023/ai-passport-pocket-letter.git
+cd ai-passport-pocket-letter
 # Activate your installed ESP-IDF 5.5.3 environment first.
 ./tools/validate.sh --static
 ./tools/validate.sh --firmware
@@ -83,13 +83,13 @@ The 3 MB application limit, protected `cardid` at `0x356000`, permanent Recovery
 
 | Verification | Recorded result |
 | --- | --- |
-| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,344 / 3,145,728 bytes |
+| Build | PASS locally with ESP-IDF 5.5.3; application 3,133,376 / 3,145,728 bytes |
 | Host tests | PASS: protocol, navigation, storage and repository checks |
 | UI and editor | Actual LVGL rendering, QR decoding and desktop-browser editor checks passed |
-| Device tests | PASS for refined-UI USB flash, 40-second boot observation and BLE-advertisement smoke checks; full device acceptance pending |
+| Device tests | PASS for Pocket Letter USB flash, 40-second boot observation and compatible BLE-advertisement smoke checks; full device acceptance pending |
 | Unverified | Walking encounters, mobile captive portals, power use, radio memory and physical Recovery |
 
-See the [verification record](docs/assets/streetpass-guide.md#refined-ui-verification-2026-09-22) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
+See the [verification record](docs/assets/streetpass-guide.md#pocket-letter-verification-2026-09-23) for the dated artifact checksum and test boundaries. The workflow badge above reflects current remote checks rather than this recorded local result.
 
 ## Project map
 
@@ -105,9 +105,11 @@ See the [verification record](docs/assets/streetpass-guide.md#refined-ui-verific
 | `main/sp_ui.*` | Device pages and dark theme |
 | `components/bsp/` | Upstream board support |
 | `tests/`, `tools/` | Host checks, firmware verification and preview tooling |
-| `docs/assets/` | StreetPass guide and design decisions |
+| `docs/assets/` | Pocket Letter guide and design decisions |
 
-This standalone repository develops StreetPass on `main`. Retained upstream hardware and demo documents describe the original platform; the root README and StreetPass guide describe this application. The inherited fork-sync workflow skips standalone repositories. Upstream history and attribution are preserved.
+This standalone repository develops Pocket Letter on `main`. Retained upstream hardware and demo documents describe the original platform; the root README and Pocket Letter guide describe this application. The inherited fork-sync workflow skips standalone repositories. Upstream history and attribution are preserved.
+
+The existing `streetpass` source filenames, NVS namespace and SP v1 BLE payload remain unchanged so saved profiles and compatible older devices continue to work.
 
 </details>
 

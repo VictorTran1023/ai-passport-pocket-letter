@@ -36,8 +36,8 @@ Use this page to discover repository documentation. `authoritative` documents de
 
 GitHub community documents: [CONTRIBUTING.md](../.github/CONTRIBUTING.md), [CODE_OF_CONDUCT.md](../.github/CODE_OF_CONDUCT.md), [SECURITY.md](../.github/SECURITY.md), and [SUPPORT.md](../.github/SUPPORT.md).
 
-- [StreetPass development](assets/streetpass-development.md)
-- [StreetPass decisions](assets/streetpass-decisions.md)
+- [Pocket Letter development](assets/streetpass-development.md)
+- [Pocket Letter decisions](assets/streetpass-decisions.md)
 
-- [StreetPass guide](assets/streetpass-guide.md)
-- [StreetPass project overview](../README.md)
+- [Pocket Letter guide](assets/streetpass-guide.md)
+- [Pocket Letter project overview](../README.md)

@@ -2,11 +2,11 @@
 
 # Security policy
 
-StreetPass exchanges public profile cards. It does not authenticate identities or provide confidential messaging. Do not put secrets in a public card.
+Pocket Letter exchanges public profile cards. It does not authenticate identities or provide confidential messaging. Do not put secrets in a public card.
 
 ## Report privately
 
-Report vulnerabilities in this application to the maintainer of **VictorTran1023/ai-passport-streetpass**, not to the upstream project by default. Use [private vulnerability reporting](https://github.com/VictorTran1023/ai-passport-streetpass/security/advisories/new) when available. If unavailable, open an issue requesting a private contact without including exploit details, credentials, personal data or reproduction materials.
+Report vulnerabilities in this application to the maintainer of **VictorTran1023/ai-passport-pocket-letter**, not to the upstream project by default. Use [private vulnerability reporting](https://github.com/VictorTran1023/ai-passport-pocket-letter/security/advisories/new) when available. If unavailable, open an issue requesting a private contact without including exploit details, credentials, personal data or reproduction materials.
 
 Include the firmware commit, board revision, affected component, impact and sanitized reproduction steps through the private channel. For a confirmed upstream BSP issue, coordinate with the maintainer before involving FoloToy. This prototype has no guaranteed security response time or support period.
 

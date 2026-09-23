@@ -2,11 +2,11 @@
 
 # 安全政策
 
-擦肩交换公开名片，不验证身份，也不提供私密消息。请勿在公开名片里填写秘密。
+口袋来信交换公开名片，不验证身份，也不提供私密消息。请勿在公开名片里填写秘密。
 
 ## 私下报告
 
-本应用的问题请报告给 **VictorTran1023/ai-passport-streetpass** 的维护者，不默认转交上游。可用时请使用[私密漏洞报告](https://github.com/VictorTran1023/ai-passport-streetpass/security/advisories/new)。如果入口不可用，请开一个仅请求私下联系方式的 issue，不包含利用细节、凭证、个人数据或复现材料。
+本应用的问题请报告给 **VictorTran1023/ai-passport-pocket-letter** 的维护者，不默认转交上游。可用时请使用[私密漏洞报告](https://github.com/VictorTran1023/ai-passport-pocket-letter/security/advisories/new)。如果入口不可用，请开一个仅请求私下联系方式的 issue，不包含利用细节、凭证、个人数据或复现材料。
 
 通过私密渠道提供固件提交、板子版本、受影响组件、影响和脱敏后的复现步骤。确认涉及上游 BSP 时，先与维护者协调，再联系 FoloToy。本原型没有保证的安全响应时限或支持周期。
 

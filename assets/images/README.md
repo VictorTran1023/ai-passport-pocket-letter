@@ -11,7 +11,7 @@ Store reusable source images and generated display assets here.
 - Preserve editable sources where licensing permits, and record the source and license.
 - Never commit device QR secrets, credentials, or personal data in images.
 
-## StreetPass references and actual rendering
+## Earlier design references and actual rendering
 
 - [Approved color reference](streetpass-techdark-palette-reference.png): supplied by the user, retained as a design reference; no additional redistribution rights are asserted.
 - [Approved design overview](streetpass-techdark-ui-overview-v1.png): AI-generated visual proposal. Its QR patterns are illustrative.
@@ -34,3 +34,11 @@ Keep these images versioned. Do not replace actual implementation previews with 
 ## Implemented UI, revision 2
 
 - [Four-page preview](streetpass-lvgl-focus-v2.png) and [all 12 pages](streetpass-lvgl-preview-v2.png): rendered from the revised `main/sp_ui.c` on 2026-09-22 using the host renderer and synthetic profiles. PNG montages preserve each 240 x 320 screen at native resolution. The UI study informed typography, spacing, blue accents and the envelope mascot; physical-button navigation is retained. QR payloads are real test fixtures and decode successfully. These are software renders, not LCD photographs.
+
+## Pocket Letter, current presentation
+
+- [Pocket Letter cover](pocket-letter-hero-v1.png): AI-generated edit of the prior StreetPass cover, retaining its concept-device composition while replacing the product name. The screen is illustrative, not a device photograph.
+- [Current four-page LVGL preview](pocket-letter-lvgl-focus-v1.png) and [all 12 pages](pocket-letter-lvgl-preview-v1.png): actual 240 x 320 firmware rendering with synthetic profile and QR fixtures after the rename. Test credentials shown are not device secrets.
+- [Current phone editor preview](pocket-letter-phone-editor-v1.png): actual embedded editor rendered in desktop Chrome with a synthetic local API.
+
+Earlier `streetpass-*` images remain as historical design and implementation records.

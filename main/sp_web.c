@@ -178,7 +178,7 @@ esp_err_t sp_web_start(void) {
         return ESP_ERR_INVALID_STATE;
     char suffix[9];
     random_hex(suffix, 4);
-    snprintf(ssid, sizeof ssid, "StreetPass-%s", suffix);
+    snprintf(ssid, sizeof ssid, "PocketLetter-%s", suffix);
     random_hex(password, 8);
     random_hex(token, 16);
     snprintf(qr, sizeof qr, "WIFI:T:WPA;S:%s;P:%s;;", ssid, password);
@@ -296,9 +296,5 @@ void sp_web_stop(void) {
     memset(token, 0, sizeof token);
     memset(qr, 0, sizeof qr);
 }
-const char *sp_web_wifi_qr(void) {
-    return qr;
-}
-const char *sp_web_ssid(void) {
-    return ssid;
-}
+const char *sp_web_wifi_qr(void) { return qr; }
+const char *sp_web_ssid(void) { return ssid; }

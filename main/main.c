@@ -345,5 +345,5 @@ void app_main(void) {
         render();
         return;
     }
-    ESP_LOGI(TAG, "StreetPass started; free heap: %lu", (unsigned long)esp_get_free_heap_size());
+    ESP_LOGI(TAG, "Pocket Letter started; free heap: %lu", (unsigned long)esp_get_free_heap_size());
 }

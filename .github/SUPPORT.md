@@ -4,7 +4,7 @@
 
 # Support
 
-StreetPass application questions belong in [this repository's issues](https://github.com/VictorTran1023/ai-passport-streetpass/issues). Start with the [StreetPass guide](../docs/assets/streetpass-guide.md). The hardware references below describe the upstream platform.
+Pocket Letter application questions belong in [this repository's issues](https://github.com/VictorTran1023/ai-passport-pocket-letter/issues). Start with the [Pocket Letter guide](../docs/assets/streetpass-guide.md). The hardware references below describe the upstream platform.
 
 FoloToy AI Passport is open-source hardware and firmware. The community can help
 confirm reproducible issues and discuss improvements, but one-to-one
